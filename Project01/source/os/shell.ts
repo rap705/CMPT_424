@@ -34,7 +34,7 @@ module TSOS {
             // help
             sc = new ShellCommand(this.shellHelp,
                                   "help",
-                                  "- This is the help command. Seek help.");
+                                  "- This is the help command. Seek help. Help");
             this.commandList[this.commandList.length] = sc;
 
             // shutdown
@@ -302,14 +302,14 @@ module TSOS {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
         }
-        public shellDate(){
+        public shellDate(): void{
             let date = new Date();
             _StdOut.putText("Todays date is "+date);
         }
-        public shellWhereAmI(){
+        public shellWhereAmI(): void{
             _StdOut.putText("How am I supposed to know if you don't!")
         }
-        public shellFlip(){
+        public shellFlip(): void{
             let randomNum = Math.random();
             if(randomNum > .5){
                 _StdOut.putText("The coin fliped to heads.");
