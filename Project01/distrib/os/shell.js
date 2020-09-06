@@ -195,22 +195,15 @@ var TSOS;
         shellMan(args) {
             if (args.length > 0) {
                 var topic = args[0];
-                //Allows for check to confirm command was found
-                var trigger = false;
-                for(let i = 0; i < _OsShell.commandList.length; i++){
-                    //topic found
-                    if(_OsShell.commandList[i].command === topic){
-                        _StdIn.putText(_OsShell.commandList[i].command + ": " + _OsShell.commandList[i].description);
-                        trigger = true;
+                switch (topic) {
+                    case "help":
+                        _StdOut.putText("Help displays a list of (hopefully) valid commands.");
                         break;
-                    }
+                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
+                    default:
+                        _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
-                //Topic not found 
-                if(!trigger){
-                    _StdOut.putText("No manual entry for " + args[0] + ".");
-                }
-            } 
-            //No topic supplied 
+            }
             else {
                 _StdOut.putText("Usage: man <topic>  Please supply a topic.");
             }

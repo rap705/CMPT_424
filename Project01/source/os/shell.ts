@@ -73,6 +73,11 @@ module TSOS {
                                   "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
 
+            sc = new ShellCommand(this.shellDate, "date", "- Shows the currents date");
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellWhereAmI, "whereami", "- Shows current location");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -230,15 +235,22 @@ module TSOS {
         public shellMan(args: string[]) {
             if (args.length > 0) {
                 var topic = args[0];
-                switch (topic) {
-                    case "help":
-                        _StdOut.putText("Help displays a list of (hopefully) valid commands.");
+                //Allows for check to confirm command was found
+                var trigger = false;
+                for(let i = 0; i < _OsShell.commandList.length; i++){
+                    //topic found
+                    if(_OsShell.commandList[i].command === topic){
+                        _StdIn.putText(_OsShell.commandList[i].command + ": " + _OsShell.commandList[i].description);
+                        trigger = true;
                         break;
-                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
-                    default:
-                        _StdOut.putText("No manual entry for " + args[0] + ".");
+                    }
                 }
-            }
+                //Topic not found 
+                if(!trigger){
+                    _StdOut.putText("No manual entry for " + args[0] + ".");
+                }
+            } 
+            //No topic supplied 
             else {
                 _StdOut.putText("Usage: man <topic>  Please supply a topic.");
             }
@@ -283,6 +295,13 @@ module TSOS {
             } else {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
+        }
+        public shellDate(){
+            let date = new Date();
+            _StdOut.putText("Todays date is "+date);
+        }
+        public shellWhereAmI(){
+            _StdOut.putText("How am I supposed to know if you don't!")
         }
 
     }

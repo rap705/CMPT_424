@@ -7,7 +7,7 @@
 var TSOS;
 (function (TSOS) {
     class Console {
-        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, buffer = "") {
+        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, buffer = "" ) {
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
@@ -30,6 +30,7 @@ var TSOS;
                 // Get the next character from the kernel input queue.
                 var chr = _KernelInputQueue.dequeue();
                 // Check to see if it's "special" (enter or ctrl-c) or "normal" (anything else that the keyboard device driver gave us).
+
                 if (chr === String.fromCharCode(13)) { // the Enter key
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
@@ -37,7 +38,7 @@ var TSOS;
                     // ... and reset our buffer.
                     this.buffer = "";
                 }
-                else {
+                else{
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
                     this.putText(chr);
@@ -71,20 +72,12 @@ var TSOS;
              * Font height margin is extra spacing between the lines.
              */
 
-             let changeValue = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont , this.currentFontSize) + _FontHeightMargin;
-             this.currentYPosition += changeValue;
-             if(this.currentYPosition > _Canvas.height){
-                 let snapshot = _DrawingContext.getImageData(0, 0, _Canvas.width, _Canvas.height);
-                 this.clearScreen();
-                 _DrawingContext.putImageData(snapshot, 0, -changeValue);
-                 this.currentYPosition -= changeValue
-             }
-             
-            /*this.currentYPosition += _DefaultFontSize +
+            this.currentYPosition += _DefaultFontSize +
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
-                _FontHeightMargin;*/
+                _FontHeightMargin;
             // TODO: Handle scrolling. (iProject 1)
         }
+
     }
     TSOS.Console = Console;
 })(TSOS || (TSOS = {}));
