@@ -80,6 +80,10 @@ module TSOS {
             //Where am I
             sc = new ShellCommand(this.shellWhereAmI, "whereami", "- Shows current location");
             this.commandList[this.commandList.length] = sc;
+
+            //Coin flip
+            sc = new ShellCommand(this.shellFlip, "flip" , "- Flip a coin");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -304,6 +308,15 @@ module TSOS {
         }
         public shellWhereAmI(){
             _StdOut.putText("How am I supposed to know if you don't!")
+        }
+        public shellFlip(){
+            let randomNum = Math.random();
+            if(randomNum > .5){
+                _StdOut.putText("The coin fliped to heads.");
+            }
+            else{
+                _StdOut.putText("The coin flipped to tails.")
+            }
         }
 
     }
