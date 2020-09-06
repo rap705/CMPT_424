@@ -46,11 +46,6 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
 
-            sc = new TSOS.ShellCommand(this.shellDate, "date", "- Shows the currents date");
-            this.commandList[this.commandList.length] = sc;
-
-            sc = new TSOS.ShellCommand(this.shellWhereAmI, "whereami", "- Shows current location");
-            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -249,13 +244,6 @@ var TSOS;
             else {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
-        }
-        shellDate(){
-            let date = new Date();
-            _StdOut.putText("Todays date is "+date);
-        }
-        shellWhereAmI(){
-            _StdOut.putText("How am I supposed to know if you don't!")
         }
     }
     TSOS.Shell = Shell;

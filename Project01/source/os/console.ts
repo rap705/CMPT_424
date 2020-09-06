@@ -44,7 +44,7 @@ module TSOS {
                 }
                 else if(chr === String.fromCharCode(8)){//BackSpace
                     //Make sure there are characters in the buffer then delete the last one.
-                    if(this.buffer){
+                    if(this.buffer.length > 0){
                         this.backspace();
                     }
                 }
@@ -84,7 +84,7 @@ module TSOS {
              * Font height margin is extra spacing between the lines.
              */
             let changeValue = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont , this.currentFontSize) + _FontHeightMargin;
-             this.currentYPosition += changeValue;
+            this.currentYPosition += changeValue;
              if(this.currentYPosition > _Canvas.height){
                  let snapshot = _DrawingContext.getImageData(0, 0, _Canvas.width, _Canvas.height);
                  this.clearScreen();
@@ -97,7 +97,7 @@ module TSOS {
              */
             // TODO: Handle scrolling. (iProject 1)
         }
-        public backspace(){
+        public backspace(): void {
             let deletedChar = this.buffer.charAt(this.buffer.length - 1);
             let xFontSize = _DrawingContext.measureText(this.currentFont, this.currentFontSize, deletedChar);
             let yFontSize = this.currentYPosition - _DefaultFontSize;

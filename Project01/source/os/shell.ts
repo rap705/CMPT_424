@@ -28,7 +28,7 @@ module TSOS {
             // ver
             sc = new ShellCommand(this.shellVer,
                                   "ver",
-                                  "- Displays the current version data.");
+                                  "- Displays the current version data. Help");
             this.commandList[this.commandList.length] = sc;
 
             // help
@@ -72,10 +72,12 @@ module TSOS {
                                   "prompt",
                                   "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
-
+            
+            //Date 
             sc = new ShellCommand(this.shellDate, "date", "- Shows the currents date");
             this.commandList[this.commandList.length] = sc;
-
+            
+            //Where am I
             sc = new ShellCommand(this.shellWhereAmI, "whereami", "- Shows current location");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
