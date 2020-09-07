@@ -1,0 +1,13 @@
+\documentclass{article}
+
+\begin{document}
+1. There are number of advantages when using a same system call interface to manipulate files and devices.  The main advantage of this interface is that 
+the devices are seen as files and are therefore handled by the kernel.  This makes the code much more portable across different OS because the user can find
+an API so that thier device can be handled rather than it having to be written hardware specific into the OS.  Most modern OS use same system call interfaces
+for this exact reason.  Although this is a good thing it does lead to one major disadvantage which is that it can become much harder or impossible to support
+all of the functionality of the device although many OS have found ways to overcome this or limit its impact.
+
+2.It would be possible for a user to create a new command interpreter using the system call interface.  The user could do this because they are given the ability
+to create new processes and manage ones that are currently happening.  With all of this power it would be possible for a user to create a new command interpreter.
+
+\end{document}
