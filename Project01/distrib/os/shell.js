@@ -54,6 +54,9 @@ var TSOS;
             //Coin flip
             sc = new TSOS.ShellCommand(this.shellFlip, "flip", "- Flip a coin");
             this.commandList[this.commandList.length] = sc;
+            //Update Status
+            sc = new TSOS.ShellCommand(this.statusUpdate, "status", "<string> -Updates the Current Status");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -274,6 +277,12 @@ var TSOS;
             }
             else {
                 _StdOut.putText("The coin flipped to tails.");
+            }
+        };
+        Shell.prototype.statusUpdate = function (args) {
+            if (args.length > 0) {
+                var timeSet = document.getElementById("status");
+                timeSet.innerText = args[0].toString();
             }
         };
         Shell.prototype.bsod = function () {

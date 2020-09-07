@@ -84,6 +84,10 @@ module TSOS {
             //Coin flip
             sc = new ShellCommand(this.shellFlip, "flip" , "- Flip a coin");
             this.commandList[this.commandList.length] = sc;
+
+            //Update Status
+            sc = new ShellCommand(this.statusUpdate, "status", "<string> -Updates the Current Status");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -316,6 +320,12 @@ module TSOS {
             }
             else{
                 _StdOut.putText("The coin flipped to tails.")
+            }
+        }
+        public statusUpdate( args: string[]): void{
+            if(args.length > 0){
+                var timeSet = <HTMLElement> document.getElementById("status");
+                timeSet.innerText = args[0].toString();
             }
         }
         public bsod(): void{
