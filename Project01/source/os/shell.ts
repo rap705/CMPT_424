@@ -318,6 +318,9 @@ module TSOS {
                 _StdOut.putText("The coin flipped to tails.")
             }
         }
+        public bsod(): void{
+            
+        }
 
     }
 }

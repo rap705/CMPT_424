@@ -276,6 +276,8 @@ var TSOS;
                 _StdOut.putText("The coin flipped to tails.");
             }
         };
+        Shell.prototype.bsod = function () {
+        };
         return Shell;
     }());
     TSOS.Shell = Shell;

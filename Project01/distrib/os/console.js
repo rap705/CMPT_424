@@ -48,6 +48,8 @@ var TSOS;
                         this.backspace();
                     }
                 }
+                else if (chr === String.fromCharCode(9)) {
+                }
                 else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
@@ -98,9 +100,12 @@ var TSOS;
         Console.prototype.backspace = function () {
             var deletedChar = this.buffer.charAt(this.buffer.length - 1);
             var xFontSize = _DrawingContext.measureText(this.currentFont, this.currentFontSize, deletedChar);
-            var yFontSize = this.currentYPosition - _DefaultFontSize;
+            var yFontSize = _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin + this.currentFontSize + this.currentYPosition;
             this.currentXPosition -= xFontSize;
-            _DrawingContext.clearRect(this.currentXPosition, yFontSize, xFontSize, yFontSize);
+            _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize - _FontHeightMargin, xFontSize, yFontSize);
+        };
+        Console.prototype.bsod = function () {
+            _DrawingContext.style.backgroundColor = "blue";
         };
         return Console;
     }());

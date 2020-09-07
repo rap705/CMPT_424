@@ -42,13 +42,16 @@ module TSOS {
                     // ... and reset our buffer.
                     this.buffer = "";
                 }
-                else if(chr === String.fromCharCode(8)){//BackSpace
+                else if(chr === String.fromCharCode(8)){ //BackSpace
                     //Make sure there are characters in the buffer then delete the last one.
                     if(this.buffer.length > 0){
                         this.backspace();
                     }
                 }
-                 else {
+                else if(chr === String.fromCharCode(9)){
+
+                }
+                else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
                     this.putText(chr);
@@ -100,9 +103,12 @@ module TSOS {
         public backspace(): void {
             let deletedChar = this.buffer.charAt(this.buffer.length - 1);
             let xFontSize = _DrawingContext.measureText(this.currentFont, this.currentFontSize, deletedChar);
-            let yFontSize = this.currentYPosition - _DefaultFontSize;
+            let yFontSize = _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin  + this.currentFontSize + this.currentYPosition;
             this.currentXPosition -= xFontSize;
-            _DrawingContext.clearRect(this.currentXPosition, yFontSize, xFontSize, yFontSize);
+            _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize - _FontHeightMargin, xFontSize, yFontSize);
+        }
+        public bsod(){
+            _DrawingContext.style.backgroundColor = "blue";
         }
     }
  }
