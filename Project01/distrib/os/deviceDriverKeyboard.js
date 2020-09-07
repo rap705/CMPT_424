@@ -55,13 +55,64 @@ var TSOS;
                 // TODO: Check for caps-lock and handle as shifted if so.
                 _KernelInputQueue.enqueue(chr);
             }
-            else if (((keyCode >= 48) && (keyCode <= 57)) || // digits
-                (keyCode == 32) || // space
+            else if ((keyCode >= 48) && (keyCode <= 57 && !isShifted)) { //Digits
+                chr = String.fromCharCode(keyCode);
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if ((keyCode == 32) || // space
                 (keyCode == 13) || // Enter
                 (keyCode == 8)) // Backspace
              {
                 chr = String.fromCharCode(keyCode);
                 _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 38) {
+                chr = "up_arrow";
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 40) {
+                chr = "down_arrow";
+                _KernelInputQueue.enqueue(chr);
+            }
+            //Handles all symbols above numbers in order from 0-9
+            else if ((keyCode >= 48) && (keyCode <= 57 && isShifted)) {
+                {
+                    switch (keyCode) {
+                        case 48: {
+                            chr = String.fromCharCode(41);
+                            break;
+                        }
+                        case 49: {
+                            chr = String.fromCharCode(33);
+                            break;
+                        }
+                        case 50: {
+                            chr = String.fromCharCode(64);
+                            break;
+                        }
+                        case 51:
+                            chr = String.fromCharCode(35);
+                            break;
+                        case 52:
+                            chr = String.fromCharCode(36);
+                            break;
+                        case 53:
+                            chr = String.fromCharCode(37);
+                            break;
+                        case 54:
+                            chr = String.fromCharCode(94);
+                            break;
+                        case 55:
+                            chr = "&";
+                            break;
+                        case 56:
+                            chr = String.fromCharCode(42);
+                            break;
+                        case 57:
+                            chr = "(";
+                            break;
+                    }
+                }
             }
         };
         return DeviceDriverKeyboard;

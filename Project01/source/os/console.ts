@@ -13,7 +13,8 @@ module TSOS {
                     public currentFontSize = _DefaultFontSize,
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
-                    public buffer = "", public optionList = []) {
+                    public buffer = "", public optionList = [],
+                    public commandCounter = 0, public commandList = []) {
         }
 
         public init(): void {
@@ -40,6 +41,8 @@ module TSOS {
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
+                    this.commandList[this.commandList.length] = this.buffer;
+                    this.commandCounter++;
                     this.buffer = "";
                 }
                 else if(chr === String.fromCharCode(8)){ //BackSpace
@@ -50,6 +53,12 @@ module TSOS {
                 }
                 else if(chr === String.fromCharCode(9)){
 
+                }
+                else if(chr === "up_arrow"){
+                    this.upArrow();
+                }
+                else if(chr === "down_arrow"){
+                    this.downArrow();
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -110,15 +119,29 @@ module TSOS {
         public clearLine(): void{
             let yFontSize = _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin  + this.currentFontSize + this.currentYPosition;
             _DrawingContext.clearRect(12, this.currentYPosition - _DefaultFontSize - _FontHeightMargin, 488, yFontSize);
+            this.currentXPosition = 12;
+
         }
         public tabList(text) {
             //Ensures that the user has enter a letter
             if(text.length > 0){
                 this.optionList = [];
                 for(let i = 0; i < _OsShell.commandList.length; i++){
-                    
+
                 }
             }
+        }
+        public upArrow(): void{
+            this.clearLine();
+            this.commandCounter --;
+            this.putText(this.commandList[this.commandCounter]);
+            this.buffer = this.commandList[this.commandCounter];
+        }
+        public downArrow(): void{
+            this.clearLine();
+            this.commandCounter ++;
+            this.putText(this.commandList[this.commandCounter]);
+            this.buffer = this.commandList[this.commandCounter];
         }
         public bsod(){
             _DrawingContext.style.backgroundColor = "blue";

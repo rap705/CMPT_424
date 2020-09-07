@@ -7,19 +7,23 @@
 var TSOS;
 (function (TSOS) {
     var Console = /** @class */ (function () {
-        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer, optionList) {
+        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer, optionList, commandCounter, commandList) {
             if (currentFont === void 0) { currentFont = _DefaultFontFamily; }
             if (currentFontSize === void 0) { currentFontSize = _DefaultFontSize; }
             if (currentXPosition === void 0) { currentXPosition = 0; }
             if (currentYPosition === void 0) { currentYPosition = _DefaultFontSize; }
             if (buffer === void 0) { buffer = ""; }
             if (optionList === void 0) { optionList = []; }
+            if (commandCounter === void 0) { commandCounter = 0; }
+            if (commandList === void 0) { commandList = []; }
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
             this.optionList = optionList;
+            this.commandCounter = commandCounter;
+            this.commandList = commandList;
         }
         Console.prototype.init = function () {
             this.clearScreen();
@@ -42,6 +46,8 @@ var TSOS;
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
+                    this.commandList[this.commandList.length] = this.buffer;
+                    this.commandCounter++;
                     this.buffer = "";
                 }
                 else if (chr === String.fromCharCode(8)) { //BackSpace
@@ -51,6 +57,12 @@ var TSOS;
                     }
                 }
                 else if (chr === String.fromCharCode(9)) {
+                }
+                else if (chr === "up_arrow") {
+                    this.upArrow();
+                }
+                else if (chr === "down_arrow") {
+                    this.downArrow();
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -109,6 +121,7 @@ var TSOS;
         Console.prototype.clearLine = function () {
             var yFontSize = _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin + this.currentFontSize + this.currentYPosition;
             _DrawingContext.clearRect(12, this.currentYPosition - _DefaultFontSize - _FontHeightMargin, 488, yFontSize);
+            this.currentXPosition = 12;
         };
         Console.prototype.tabList = function (text) {
             //Ensures that the user has enter a letter
@@ -117,6 +130,18 @@ var TSOS;
                 for (var i = 0; i < _OsShell.commandList.length; i++) {
                 }
             }
+        };
+        Console.prototype.upArrow = function () {
+            this.clearLine();
+            this.commandCounter--;
+            this.putText(this.commandList[this.commandCounter]);
+            this.buffer = this.commandList[this.commandCounter];
+        };
+        Console.prototype.downArrow = function () {
+            this.clearLine();
+            this.commandCounter++;
+            this.putText(this.commandList[this.commandCounter]);
+            this.buffer = this.commandList[this.commandCounter];
         };
         Console.prototype.bsod = function () {
             _DrawingContext.style.backgroundColor = "blue";
