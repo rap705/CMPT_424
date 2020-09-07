@@ -8,7 +8,7 @@
          "type": "chrome",
          "request": "launch",
          "name": "Launch Chrome",
-         "url": "file:///Users/Alan/Documents/Documents%20-%20Alans%20late%202017%20iMac/Teaching/Courses/current/Operating%20Systems/Initial%20Project/TSOS-2019/index.html",
+         "url": "file: \Users\rapop\Documents\College\Senior Year\CMPT_424\TSOS\CMPT_424",
          "webRoot": "${workspaceFolder}"
       }
    ]
