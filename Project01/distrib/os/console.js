@@ -7,17 +7,19 @@
 var TSOS;
 (function (TSOS) {
     var Console = /** @class */ (function () {
-        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer) {
+        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer, optionList) {
             if (currentFont === void 0) { currentFont = _DefaultFontFamily; }
             if (currentFontSize === void 0) { currentFontSize = _DefaultFontSize; }
             if (currentXPosition === void 0) { currentXPosition = 0; }
             if (currentYPosition === void 0) { currentYPosition = _DefaultFontSize; }
             if (buffer === void 0) { buffer = ""; }
+            if (optionList === void 0) { optionList = []; }
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
+            this.optionList = optionList;
         }
         Console.prototype.init = function () {
             this.clearScreen();
@@ -103,6 +105,18 @@ var TSOS;
             var yFontSize = _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin + this.currentFontSize + this.currentYPosition;
             this.currentXPosition -= xFontSize;
             _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize - _FontHeightMargin, xFontSize, yFontSize);
+        };
+        Console.prototype.clearLine = function () {
+            var yFontSize = _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin + this.currentFontSize + this.currentYPosition;
+            _DrawingContext.clearRect(12, this.currentYPosition - _DefaultFontSize - _FontHeightMargin, 488, yFontSize);
+        };
+        Console.prototype.tabList = function (text) {
+            //Ensures that the user has enter a letter
+            if (text.length > 0) {
+                this.optionList = [];
+                for (var i = 0; i < _OsShell.commandList.length; i++) {
+                }
+            }
         };
         Console.prototype.bsod = function () {
             _DrawingContext.style.backgroundColor = "blue";

@@ -31,6 +31,9 @@ module TSOS {
             _OSclock++;
             // Call the kernel clock pulse event handler.
             _Kernel.krnOnCPUClockPulse();
+            let dateTime = new Date();
+            var timeSet = <HTMLElement> document.getElementById("dateTime");
+            timeSet.innerText = dateTime.toString();
         }
 
         //

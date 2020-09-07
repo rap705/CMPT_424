@@ -13,7 +13,7 @@ module TSOS {
                     public currentFontSize = _DefaultFontSize,
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
-                    public buffer = "") {
+                    public buffer = "", public optionList = []) {
         }
 
         public init(): void {
@@ -106,6 +106,19 @@ module TSOS {
             let yFontSize = _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin  + this.currentFontSize + this.currentYPosition;
             this.currentXPosition -= xFontSize;
             _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize - _FontHeightMargin, xFontSize, yFontSize);
+        }
+        public clearLine(): void{
+            let yFontSize = _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin  + this.currentFontSize + this.currentYPosition;
+            _DrawingContext.clearRect(12, this.currentYPosition - _DefaultFontSize - _FontHeightMargin, 488, yFontSize);
+        }
+        public tabList(text) {
+            //Ensures that the user has enter a letter
+            if(text.length > 0){
+                this.optionList = [];
+                for(let i = 0; i < _OsShell.commandList.length; i++){
+                    
+                }
+            }
         }
         public bsod(){
             _DrawingContext.style.backgroundColor = "blue";

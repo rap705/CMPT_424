@@ -51,7 +51,7 @@ module TSOS {
                 _GLaDOS.init();
             }
         }
-
+        
         public static hostLog(msg: string, source: string = "?"): void {
             // Note the OS CLOCK.
             var clock: number = _OSclock;
@@ -68,7 +68,6 @@ module TSOS {
 
             // TODO in the future: Optionally update a log database or some streaming service.
         }
-
 
         //
         // Host Events
