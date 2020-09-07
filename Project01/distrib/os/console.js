@@ -57,6 +57,7 @@ var TSOS;
                     }
                 }
                 else if (chr === String.fromCharCode(9)) {
+                    this.tabList();
                 }
                 else if (chr === "up_arrow") {
                     this.upArrow();
@@ -120,14 +121,27 @@ var TSOS;
         };
         Console.prototype.clearLine = function () {
             var yFontSize = _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin + this.currentFontSize + this.currentYPosition;
+            //The canvas size is 500p and the arrow is about 12p
             _DrawingContext.clearRect(12, this.currentYPosition - _DefaultFontSize - _FontHeightMargin, 488, yFontSize);
             this.currentXPosition = 12;
         };
-        Console.prototype.tabList = function (text) {
+        Console.prototype.tabList = function () {
+            var finalCommand = [];
             //Ensures that the user has enter a letter
-            if (text.length > 0) {
-                this.optionList = [];
-                for (var i = 0; i < _OsShell.commandList.length; i++) {
+            if (this.buffer.length > 0) {
+                this.optionList = _OsShell.commandList;
+                for (var i = 0; i < this.buffer.length; i++) {
+                    for (var _i = 0, _a = this.optionList; _i < _a.length; _i++) {
+                        var sc = _a[_i];
+                        if (sc.commannd[i] === this.buffer[i]) {
+                            finalCommand[finalCommand.length] = sc;
+                        }
+                    }
+                }
+                if (finalCommand.length === 1) {
+                    this.clearLine();
+                    this.putText(finalCommand[0]);
+                    this.buffer = finalCommand[0];
                 }
             }
         };

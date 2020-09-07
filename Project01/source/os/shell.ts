@@ -88,6 +88,10 @@ module TSOS {
             //Update Status
             sc = new ShellCommand(this.statusUpdate, "status", "<string> -Updates the Current Status");
             this.commandList[this.commandList.length] = sc;
+
+            //Update Status
+            sc = new ShellCommand(this.shellLoad, "load", "Checks to make sure all numbers are hex");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -326,6 +330,39 @@ module TSOS {
             if(args.length > 0){
                 var timeSet = <HTMLElement> document.getElementById("status");
                 timeSet.innerText = args[0].toString();
+            }
+        }
+        public shellLoad(): void{
+            let userInput = (<HTMLInputElement>document.getElementById("taProgramInput")).value;
+            let valid = true;
+            //Test to see if user input is captured
+            //_StdOut.putText(userInput);
+            userInput = Utils.trim(userInput);
+            for(let i=0; i < userInput.length; i++){
+                switch(userInput.charAt(i)){
+                    case " ":break;
+                    case "A":break;
+                    case "B":break;
+                    case "C":break;
+                    case "D":break;
+                    case "E":break;
+                    case "F":break;
+                    case "1":break;
+                    case "2":break;
+                    case "3":break;
+                    case "4":break;
+                    case "5":break;
+                    case "6":break;
+                    case "7":break;
+                    case "8":break;
+                    case "9":break;
+                    default:
+                        _StdOut.putText("Invalid Hex");
+                        valid = false;
+                }
+            }
+            if(valid){
+                _StdOut.putText("Valid Hex");
             }
         }
         public bsod(): void{
