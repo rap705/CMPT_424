@@ -189,6 +189,7 @@ var TSOS;
                 chr = "}";
                 _KernelInputQueue.enqueue(chr);
             }
+            //TODO: Figure Out why typescript doesnt like "\"
             else if ((keyCode == 220) && !isShifted) {
                 chr = String.fromCharCode(220);
                 _KernelInputQueue.enqueue(chr);

@@ -109,6 +109,7 @@ module TSOS {
              */
             // TODO: Handle scrolling. (iProject 1)
         }
+        //TODO: Stop backspace from deleting line arrow
         public backspace(): void {
             let deletedChar = this.buffer.charAt(this.buffer.length - 1);
             let xFontSize = _DrawingContext.measureText(this.currentFont, this.currentFontSize, deletedChar);
@@ -125,20 +126,28 @@ module TSOS {
         }
         public tabList(): void{
             let finalCommand = [];
+            let prevVal = true;
+            let bufferVal = this.buffer.length;
             //Ensures that the user has enter a letter
-            if(this.buffer.length > 0){
+            if(bufferVal > 0){
                 this.optionList = _OsShell.commandList;
-                for(let i = 0; i < this.buffer.length; i++){
-                    for(var sc of this.optionList){
-                        if(sc.commannd[i] === this.buffer[i]){
-                            finalCommand[finalCommand.length] = sc;
+                for(var sc of this.optionList){
+                    prevVal = true;
+                    for(let i = 0; i < bufferVal; i++){
+                        if((sc.command[i] === this.buffer[i]) && prevVal){
+                            if((bufferVal-1 === i) && prevVal){
+                                finalCommand[finalCommand.length] = sc;
+                            }
+                        }
+                        else{
+                            prevVal = false;
                         }
                     }
                 }
                 if(finalCommand.length === 1){
                     this.clearLine();
-                    this.putText(finalCommand[0]);
-                    this.buffer = finalCommand[0];
+                    this.putText(finalCommand[0].command);
+                    this.buffer = finalCommand[0].command;
                 }
             }
         }
