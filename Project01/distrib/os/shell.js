@@ -285,7 +285,10 @@ var TSOS;
         Shell.prototype.statusUpdate = function (args) {
             if (args.length > 0) {
                 var timeSet = document.getElementById("status");
-                timeSet.innerText = args[0].toString();
+                var statusString = args.toString();
+                var re = /\,/g;
+                var fixStatus = statusString.replace(re, " ");
+                timeSet.innerText = fixStatus;
             }
         };
         Shell.prototype.shellLoad = function () {

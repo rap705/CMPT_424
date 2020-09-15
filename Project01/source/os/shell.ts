@@ -329,7 +329,10 @@ module TSOS {
         public statusUpdate( args: string[]): void{
             if(args.length > 0){
                 var timeSet = <HTMLElement> document.getElementById("status");
-                timeSet.innerText = args[0].toString();
+                let statusString = args.toString();
+                let re = /\,/g;
+                let fixStatus = statusString.replace(re , " ");
+                timeSet.innerText = fixStatus;
             }
         }
         public shellLoad(): void{
