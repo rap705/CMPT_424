@@ -338,27 +338,33 @@ module TSOS {
             //Test to see if user input is captured
             //_StdOut.putText(userInput);
             userInput = Utils.trim(userInput);
-            for(let i=0; i < userInput.length; i++){
-                switch(userInput.charAt(i)){
-                    case " ":break;
-                    case "A":break;
-                    case "B":break;
-                    case "C":break;
-                    case "D":break;
-                    case "E":break;
-                    case "F":break;
-                    case "1":break;
-                    case "2":break;
-                    case "3":break;
-                    case "4":break;
-                    case "5":break;
-                    case "6":break;
-                    case "7":break;
-                    case "8":break;
-                    case "9":break;
-                    default:
-                        _StdOut.putText("Invalid Hex");
-                        valid = false;
+            if(userInput === ""){
+                _StdOut.putText("Invalid Hex");
+                valid = false;
+            }
+            else{
+                for(let i=0; i < userInput.length; i++){
+                    switch(userInput.charAt(i)){
+                        case " ":break;
+                        case "A":break;
+                        case "B":break;
+                        case "C":break;
+                        case "D":break;
+                        case "E":break;
+                        case "F":break;
+                        case "1":break;
+                        case "2":break;
+                        case "3":break;
+                        case "4":break;
+                        case "5":break;
+                        case "6":break;
+                        case "7":break;
+                        case "8":break;
+                        case "9":break;
+                        default:
+                            _StdOut.putText("Invalid Hex");
+                            valid = false;
+                    }
                 }
             }
             if(valid){
