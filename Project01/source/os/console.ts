@@ -116,6 +116,7 @@ module TSOS {
             let yFontSize = _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin  + this.currentFontSize + this.currentYPosition;
             this.currentXPosition -= xFontSize;
             _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize - _FontHeightMargin, xFontSize, yFontSize);
+            this.buffer = this.buffer.slice(0, this.buffer.length-1);
         }
         public clearLine(): void{
             let yFontSize = _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin  + this.currentFontSize + this.currentYPosition;
