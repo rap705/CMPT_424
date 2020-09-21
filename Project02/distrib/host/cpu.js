@@ -10,37 +10,37 @@
      This code references page numbers in the text book:
      Operating System Concepts 8th edition by Silberschatz, Galvin, and Gagne.  ISBN 978-0-470-12872-5
      ------------ */
-
-module TSOS {
-
-    export class Cpu {
-
-        constructor(public PC: number = 0,
-                    public Acc: number = 0,
-                    public Xreg: number = 0,
-                    public Yreg: number = 0,
-                    public Zflag: number = 0,
-                    public isExecuting: boolean = false) {
-
+var TSOS;
+(function (TSOS) {
+    var Cpu = /** @class */ (function () {
+        function Cpu(PC, Acc, Xreg, Yreg, Zflag, isExecuting) {
+            if (PC === void 0) { PC = 0; }
+            if (Acc === void 0) { Acc = 0; }
+            if (Xreg === void 0) { Xreg = 0; }
+            if (Yreg === void 0) { Yreg = 0; }
+            if (Zflag === void 0) { Zflag = 0; }
+            if (isExecuting === void 0) { isExecuting = false; }
+            this.PC = PC;
+            this.Acc = Acc;
+            this.Xreg = Xreg;
+            this.Yreg = Yreg;
+            this.Zflag = Zflag;
+            this.isExecuting = isExecuting;
         }
-
-        public init(): void {
+        Cpu.prototype.init = function () {
             this.PC = 0;
             this.Acc = 0;
             this.Xreg = 0;
             this.Yreg = 0;
             this.Zflag = 0;
             this.isExecuting = false;
-        }
-
-        public cycle(): void {
+        };
+        Cpu.prototype.cycle = function () {
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
-        }
-
-        public execute(){
-            
-        }
-    }
-}
+        };
+        return Cpu;
+    }());
+    TSOS.Cpu = Cpu;
+})(TSOS || (TSOS = {}));
