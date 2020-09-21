@@ -320,6 +320,7 @@ var TSOS;
                         case "7": break;
                         case "8": break;
                         case "9": break;
+                        case "0": break;
                         default:
                             _StdOut.putText("Invalid Hex");
                             valid = false;
