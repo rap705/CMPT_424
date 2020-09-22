@@ -373,6 +373,7 @@ module TSOS {
             }
             if(valid){
                 _StdOut.putText("Valid Hex");
+                
             }
         }
         public bsod(): void{
