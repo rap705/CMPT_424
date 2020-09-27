@@ -329,6 +329,10 @@ var TSOS;
             }
             if (valid) {
                 _StdOut.putText("Valid Hex");
+                var status_1 = _MemoryManager.checkAvailabilty();
+                if (_MemoryManager.checkAvailabilty()) {
+                    _StdOut.putText("Memory Available");
+                }
             }
         };
         Shell.prototype.bsod = function () {

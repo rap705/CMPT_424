@@ -71,5 +71,39 @@ module TSOS {
                     break;
             }
         }
+        //Load the Accumulator with the next value
+        public loadAcc(): void{
+            this.Acc = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            this.PC += 2;
+        }
+        //Load the Accumulator with a value from memory
+        public loadAccMem(): void{
+            let location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            let location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            let newLocation = location1 + location2;
+            this.Acc = parseInt(_MemoryAccessor.read(newLocation), 16);
+            this.PC += 3;
+        }
+
+        //Store the Accumulator in memory
+        public storeAccMem(): void{
+            let location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            let location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            let newLocation = location1 + location2;
+            //_MemoryAccessor.write();
+        }
+
+        //Add a value to the accumulator.  If its over 255 roll back to 0
+        public addAcc(): void{
+            let location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            let location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            let newLocation = location1 + location2;
+            let addVal = parseInt(_MemoryAccessor.read(newLocation), 16);
+            this.Acc += addVal;
+            if(this.Acc >= 256){
+                this.Acc %= 256;
+            }
+            this.PC += 3;
+        }
     }
 }

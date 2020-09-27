@@ -373,7 +373,10 @@ module TSOS {
             }
             if(valid){
                 _StdOut.putText("Valid Hex");
-                
+                let status = _MemoryManager.checkAvailabilty();
+                if(_MemoryManager.checkAvailabilty()){
+                    _StdOut.putText("Memory Available");
+                }
             }
         }
         public bsod(): void{

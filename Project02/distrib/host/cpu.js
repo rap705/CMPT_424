@@ -72,6 +72,38 @@ var TSOS;
                     break;
             }
         };
+        //Load the Accumulator with the next value
+        Cpu.prototype.loadAcc = function () {
+            this.Acc = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            this.PC += 2;
+        };
+        //Load the Accumulator with a value from memory
+        Cpu.prototype.loadAccMem = function () {
+            var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            var location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            var newLocation = location1 + location2;
+            this.Acc = parseInt(_MemoryAccessor.read(newLocation), 16);
+            this.PC += 3;
+        };
+        //Store the Accumulator in memory
+        Cpu.prototype.storeAccMem = function () {
+            var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            var location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            var newLocation = location1 + location2;
+            //_MemoryAccessor.write();
+        };
+        //Add a value to the accumulator.  If its over 255 roll back to 0
+        Cpu.prototype.addAcc = function () {
+            var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            var location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            var newLocation = location1 + location2;
+            var addVal = parseInt(_MemoryAccessor.read(newLocation), 16);
+            this.Acc += addVal;
+            if (this.Acc >= 256) {
+                this.Acc %= 256;
+            }
+            this.PC += 3;
+        };
         return Cpu;
     }());
     TSOS.Cpu = Cpu;
