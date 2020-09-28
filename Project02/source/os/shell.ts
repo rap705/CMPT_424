@@ -389,7 +389,6 @@ module TSOS {
                     This variable also allows us to then go back since we have skipped a op code
                     */
                     let memTable = "<table id=memory>";
-                    let newRow = false;
                     for(let i = 0; i < _Memory.memRange1.length; i++){
                         if(i == 0){
                             memTable += "<tr><td>" + "0x" + ((i).toString(16).toUpperCase()).padStart(3 , "0") + "</td>";
@@ -397,17 +396,9 @@ module TSOS {
                         if(i % 8 === 0){
                             if(i != 0){
                                 memTable += "<tr><td>" + "0x" + ((i).toString(16).toUpperCase()).padStart(3 , "0") + "</td>";
-                                newRow = true;
                             }
                         }
                         memTable += "<td>" + _Memory.memRange1[i] + "</td>";
-                        /*if(newRow){
-                            i--;
-                            newRow = false;
-                        }
-                        else{
-                            memTable += "<td>" + _Memory.memRange1[i] + "</td>";
-                        }*/
                     }
                     document.getElementById("divMemTable").innerHTML= memTable;
                 }
