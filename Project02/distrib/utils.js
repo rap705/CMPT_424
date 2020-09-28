@@ -44,6 +44,8 @@ var TSOS;
             }
             return retVal;
         };
+        Utils.prototype.drawMemTable = function () {
+        };
         return Utils;
     }());
     TSOS.Utils = Utils;

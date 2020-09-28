@@ -372,10 +372,44 @@ module TSOS {
                 }
             }
             if(valid){
-                _StdOut.putText("Valid Hex");
+                //_StdOut.putText("Valid Hex");
                 let status = _MemoryManager.checkAvailabilty();
                 if(_MemoryManager.checkAvailabilty()){
                     _StdOut.putText("Memory Available");
+                    //This replaces all spaces with nothing to get the input into the proper format
+                    userInput = userInput.replace(/\s/g, "");
+
+                    //This line is used to test that the input is properly formated before passing it
+                    //_StdOut.putText(userInput);
+
+                    _MemoryAccessor.writeMem(userInput);
+                    /*
+                    Create a table and draw it to the screen 
+                    The newRow variable allows us to determine when a new row has to be created and then creates that row 
+                    This variable also allows us to then go back since we have skipped a op code
+                    */
+                    let memTable = "<table id=memory>";
+                    let newRow = false;
+                    for(let i = 0; i < _Memory.memRange1.length; i++){
+                        if(i == 0){
+                            memTable += "<tr><td>" + "0x" + ((i).toString(16).toUpperCase()).padStart(3 , "0") + "</td>";
+                        }
+                        if(i % 8 === 0){
+                            if(i != 0){
+                                memTable += "<tr><td>" + "0x" + ((i).toString(16).toUpperCase()).padStart(3 , "0") + "</td>";
+                                newRow = true;
+                            }
+                        }
+                        memTable += "<td>" + _Memory.memRange1[i] + "</td>";
+                        /*if(newRow){
+                            i--;
+                            newRow = false;
+                        }
+                        else{
+                            memTable += "<td>" + _Memory.memRange1[i] + "</td>";
+                        }*/
+                    }
+                    document.getElementById("divMemTable").innerHTML= memTable;
                 }
             }
         }

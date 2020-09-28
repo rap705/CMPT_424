@@ -43,5 +43,8 @@ module TSOS {
             }
             return retVal;
         }
+        public drawMemTable(){
+            
+        }
     }
 }
