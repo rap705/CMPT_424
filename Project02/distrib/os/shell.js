@@ -57,8 +57,11 @@ var TSOS;
             //Update Status
             sc = new TSOS.ShellCommand(this.statusUpdate, "status", "<string> -Updates the Current Status");
             this.commandList[this.commandList.length] = sc;
-            //Update Status
+            //Load OP codes into memory
             sc = new TSOS.ShellCommand(this.shellLoad, "load", "Checks to make sure all numbers are hex");
+            this.commandList[this.commandList.length] = sc;
+            //Run an code from memory 
+            sc = new TSOS.ShellCommand(this.shellRun, "run", "<PID> Checks to make sure all numbers are hex");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -332,31 +335,23 @@ var TSOS;
                 //_StdOut.putText("Valid Hex");
                 var status_1 = _MemoryManager.checkAvailabilty();
                 if (_MemoryManager.checkAvailabilty()) {
+                    var pcb = new TSOS.ProcessControlBlock(_currentPID);
+                    _currentPID++;
                     _StdOut.putText("Memory Available");
                     //This replaces all spaces with nothing to get the input into the proper format
                     userInput = userInput.replace(/\s/g, "");
                     //This line is used to test that the input is properly formated before passing it
                     //_StdOut.putText(userInput);
+                    //Write the program to memory 
                     _MemoryAccessor.writeMem(userInput);
-                    /*
-                    Create a table and draw it to the screen
-                    The newRow variable allows us to determine when a new row has to be created and then creates that row
-                    This variable also allows us to then go back since we have skipped a op code
-                    */
-                    var memTable = "<table id=memory>";
-                    for (var i = 0; i < _Memory.memRange1.length; i++) {
-                        if (i == 0) {
-                            memTable += "<tr><td>" + "0x" + ((i).toString(16).toUpperCase()).padStart(3, "0") + "</td>";
-                        }
-                        if (i % 8 === 0) {
-                            if (i != 0) {
-                                memTable += "<tr><td>" + "0x" + ((i).toString(16).toUpperCase()).padStart(3, "0") + "</td>";
-                            }
-                        }
-                        memTable += "<td>" + _Memory.memRange1[i] + "</td>";
-                    }
-                    document.getElementById("divMemTable").innerHTML = memTable;
+                    //Print the program in memory on the screen 
+                    _MemoryAccessor.writeMemtoScreen();
                 }
+            }
+        };
+        Shell.prototype.shellRun = function (args) {
+            if (args.length > 0) {
+                var pid = parseInt(args);
             }
         };
         Shell.prototype.bsod = function () {
