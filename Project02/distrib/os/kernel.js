@@ -179,6 +179,7 @@ var TSOS;
                         break;
                     }
                     else {
+                        newVal -= 36;
                         print_1 += String.fromCharCode(newVal);
                     }
                 }

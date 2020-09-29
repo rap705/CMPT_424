@@ -197,6 +197,7 @@ module TSOS {
                         break;
                     }
                     else{
+                        newVal -= 36;
                         print += String.fromCharCode(newVal);
                     }
                 }
