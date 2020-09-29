@@ -381,9 +381,13 @@ module TSOS {
                 let status = _MemoryManager.checkAvailabilty();
                 if(_MemoryManager.checkAvailabilty()){
                     let pcb = new TSOS.ProcessControlBlock(_currentPID);
-                    _currentPID ++;
+
+                    _PCBCon[_PCBCon.length] = pcb;
 
                     _StdOut.putText("Memory Available");
+                    _StdOut.advanceLine();
+                    _StdOut.putText("PID: " + _currentPID);
+                    _currentPID ++;
 
                     //This replaces all spaces with nothing to get the input into the proper format
                     userInput = userInput.replace(/\s/g, "");
@@ -400,7 +404,12 @@ module TSOS {
         public shellRun(args: string){
             if(args.length > 0){
                 let pid = parseInt(args);
-               
+               if(_PCBCon[pid]){ 
+                    _CPU.isExecuting = true;
+               }
+               else{
+                   _StdOut.putText("Not a valid PID");
+               }
                 
             }
         }

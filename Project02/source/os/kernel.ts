@@ -123,6 +123,11 @@ module TSOS {
                     _krnKeyboardDriver.isr(params);   // Kernel mode device driver
                     _StdIn.handleInput();
                     break;
+                case SYSTEM_CALL:
+                    if(_Mode == 0){
+                        this.systemCall();
+                    }
+                    break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
@@ -173,6 +178,33 @@ module TSOS {
             Control.hostLog("OS ERROR - TRAP: " + msg);
             // TODO: Display error on console, perhaps in some sort of colored screen. (Maybe blue?)
             this.krnShutdown();
+        }
+        public systemCall(){
+            _Kernel.krnTrace("System Call");
+            if(_CPU.Xreg == 1){
+                _StdOut.putText(_CPU.Yreg.toString(16));
+                _StdOut.advanceLine();
+            }
+            else if(_CPU.Xreg == 2){
+                let print = "";
+                let startLocation = _CPU.Yreg;
+                for(let i = startLocation; i < 256; i++){
+                    let newVal = parseInt(_MemoryAccessor.read(i), 16);
+                    if(newVal >= 1 && newVal <= 9){
+                        print += newVal;
+                    }
+                    else if(newVal == 0){
+                        break;
+                    }
+                    else{
+                        print += String.fromCharCode(newVal);
+                    }
+                }
+                _StdOut.putText(print);
+                _StdOut.advanceLine();
+                _StdOut.putText(_OsShell.promptStr);
+            }
+            _CPU.PC ++;
         }
     }
 }

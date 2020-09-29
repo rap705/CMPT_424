@@ -39,38 +39,56 @@ var TSOS;
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
-            //this.execute();
+            this.execute(this.isExecuting);
         };
-        Cpu.prototype.execute = function (opCode) {
-            switch (opCode) {
-                case "A9":
-                    break;
-                case "AD":
-                    break;
-                case "8D":
-                    break;
-                case "6D":
-                    break;
-                case "A2":
-                    break;
-                case "AE":
-                    break;
-                case "A0":
-                    break;
-                case "AC":
-                    break;
-                case "EA":
-                    break;
-                case "00":
-                    break;
-                case "EC":
-                    break;
-                case "D0":
-                    break;
-                case "EE":
-                    break;
-                case "FF":
-                    break;
+        Cpu.prototype.execute = function (check) {
+            if (check) {
+                var opCode = _MemoryAccessor.read(this.PC);
+                switch (opCode) {
+                    case "A9":
+                        this.loadAcc();
+                        break;
+                    case "AD":
+                        this.loadAccMem();
+                        break;
+                    case "8D":
+                        this.storeAccMem();
+                        break;
+                    case "6D":
+                        this.addAcc();
+                        break;
+                    case "A2":
+                        this.loadXRegCon();
+                        break;
+                    case "AE":
+                        this.loadXRegMem();
+                        break;
+                    case "A0":
+                        this.loadYRegCon();
+                        break;
+                    case "AC":
+                        this.loadYRegMem();
+                        break;
+                    case "EA":
+                        break;
+                    case "00":
+                        this["break"]();
+                        break;
+                    case "EC":
+                        this.compareByte();
+                        break;
+                    case "D0":
+                        this.branch();
+                        break;
+                    case "EE":
+                        this.increment();
+                        break;
+                    case "FF":
+                        var interrupt = new TSOS.Interrupt(SYSTEM_CALL, [0]);
+                        _KernelInterruptQueue.enqueue(interrupt);
+                        break;
+                }
+                _MemoryAccessor.updateCPUDis(opCode);
             }
         };
         //Load the Accumulator with the next value
@@ -81,28 +99,82 @@ var TSOS;
         //Load the Accumulator with a value from memory
         Cpu.prototype.loadAccMem = function () {
             var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
-            var location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
-            var newLocation = location1 + location2;
-            this.Acc = parseInt(_MemoryAccessor.read(newLocation), 16);
+            this.Acc = parseInt(_MemoryAccessor.read(location1), 16);
             this.PC += 3;
         };
         //Store the Accumulator in memory
         Cpu.prototype.storeAccMem = function () {
             var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
-            var location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
-            var newLocation = location1 + location2;
-            //_MemoryAccessor.write();
+            _MemoryAccessor.write(location1, this.Acc);
+            this.PC += 3;
         };
-        //Add a value to the accumulator.  If its over 255 roll back to 0
+        //Add a value to the accumulator value.  If its over 255 roll back to 0
         Cpu.prototype.addAcc = function () {
             var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
-            var location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
-            var newLocation = location1 + location2;
-            var addVal = parseInt(_MemoryAccessor.read(newLocation), 16);
+            var addVal = parseInt(_MemoryAccessor.read(location1), 16);
             this.Acc += addVal;
             if (this.Acc >= 256) {
                 this.Acc %= 256;
             }
+            this.PC += 3;
+        };
+        //Load the X-Reg with a constant
+        Cpu.prototype.loadXRegCon = function () {
+            this.Xreg = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            this.PC += 2;
+        };
+        //Load the X-Reg from memory
+        Cpu.prototype.loadXRegMem = function () {
+            var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            this.Xreg = parseInt(_MemoryAccessor.read(location1));
+            this.PC += 3;
+        };
+        //Load the Y-Reg with a constant
+        Cpu.prototype.loadYRegCon = function () {
+            this.Yreg = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            this.PC += 2;
+        };
+        //Load the Y-Reg from memory
+        Cpu.prototype.loadYRegMem = function () {
+            var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            this.Yreg = parseInt(_MemoryAccessor.read(location1));
+            this.PC += 3;
+        };
+        //Break(which is really just a system call)
+        Cpu.prototype["break"] = function () {
+            this.isExecuting = false;
+        };
+        //Compare a byte in memory to the X-Reg
+        Cpu.prototype.compareByte = function () {
+            var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            var compValue = parseInt(_MemoryAccessor.read(location1), 16);
+            if (this.Xreg == compValue) {
+                this.Zflag = 1;
+            }
+            else {
+                this.Zflag = 0;
+            }
+            this.PC += 3;
+        };
+        //Branch
+        Cpu.prototype.branch = function () {
+            if (this.Zflag === 0) {
+                var jump = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+                //This accounts for the bytes we have already been through 
+                this.PC += 2;
+                this.PC += jump;
+                this.PC %= 256;
+            }
+            else {
+                this.PC += 2;
+            }
+        };
+        //Increment the value of a byte
+        Cpu.prototype.increment = function () {
+            var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+            var value = parseInt(_MemoryAccessor.read(location1), 16);
+            value++;
+            _MemoryAccessor.write(location1, value.toString(16));
             this.PC += 3;
         };
         return Cpu;

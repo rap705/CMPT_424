@@ -336,8 +336,11 @@ var TSOS;
                 var status_1 = _MemoryManager.checkAvailabilty();
                 if (_MemoryManager.checkAvailabilty()) {
                     var pcb = new TSOS.ProcessControlBlock(_currentPID);
-                    _currentPID++;
+                    _PCBCon[_PCBCon.length] = pcb;
                     _StdOut.putText("Memory Available");
+                    _StdOut.advanceLine();
+                    _StdOut.putText("PID: " + _currentPID);
+                    _currentPID++;
                     //This replaces all spaces with nothing to get the input into the proper format
                     userInput = userInput.replace(/\s/g, "");
                     //This line is used to test that the input is properly formated before passing it
@@ -352,6 +355,12 @@ var TSOS;
         Shell.prototype.shellRun = function (args) {
             if (args.length > 0) {
                 var pid = parseInt(args);
+                if (_PCBCon[pid]) {
+                    _CPU.isExecuting = true;
+                }
+                else {
+                    _StdOut.putText("Not a valid PID");
+                }
             }
         };
         Shell.prototype.bsod = function () {
