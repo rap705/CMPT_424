@@ -1,3 +1,3 @@
 # CMPT_424
 
-Use Project02 folder for project 2
+Use Project03 folder for project 3
