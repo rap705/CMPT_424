@@ -6,6 +6,7 @@ var TSOS;
             this.PID = PID;
             this.pcbStatus = "Ready";
             this.pcbPriority = 10;
+            this.memSegment;
         }
         return ProcessControlBlock;
     }());

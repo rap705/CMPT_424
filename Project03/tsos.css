@@ -46,3 +46,11 @@ h3 {
   font-size: 8pt;
   text-align: center;
 }
+
+#divMem{
+  float: right;
+}
+
+#divCPU{
+  float: left;
+}

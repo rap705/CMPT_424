@@ -55,16 +55,32 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellFlip, "flip", "- Flip a coin");
             this.commandList[this.commandList.length] = sc;
             //Update Status
-            sc = new TSOS.ShellCommand(this.statusUpdate, "status", "<string> -Updates the Current Status");
+            sc = new TSOS.ShellCommand(this.statusUpdate, "status", "<string> - Updates the Current Status");
             this.commandList[this.commandList.length] = sc;
             //Load OP codes into memory
-            sc = new TSOS.ShellCommand(this.shellLoad, "load", "Checks to make sure all numbers are hex");
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "- Checks to make sure all numbers are hex and loads them into memory");
             this.commandList[this.commandList.length] = sc;
             //Run an code from memory 
-            sc = new TSOS.ShellCommand(this.shellRun, "run", "<PID> Checks to make sure all numbers are hex");
+            sc = new TSOS.ShellCommand(this.shellRun, "run", "<PID> - Runs the selected process");
             this.commandList[this.commandList.length] = sc;
-            // ps  - list the running processes and their IDs
-            // kill <id> - kills the specified process id.
+            //Clear all memory partitions
+            sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "- Clear all memory partitions");
+            this.commandList[this.commandList.length] = sc;
+            //Run all Processes
+            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "- Runs all current process in memory");
+            this.commandList[this.commandList.length] = sc;
+            //Displays the PID and state of all Processes
+            sc = new TSOS.ShellCommand(this.shellPS, "ps", "- Displays the PID and state of all Processes");
+            this.commandList[this.commandList.length] = sc;
+            //Kills the specified Process
+            sc = new TSOS.ShellCommand(this.shellKill, "kill", "<PID> - Kills the specified Process");
+            this.commandList[this.commandList.length] = sc;
+            //Kills all the currently running processes
+            sc = new TSOS.ShellCommand(this.shellKillAll, "killall", "- Kills all currently running processes");
+            this.commandList[this.commandList.length] = sc;
+            //Sets the quantum for Round Robin scheduling 
+            sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "<Int> - Sets the Quantum for Round Robin Scheduling");
+            this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
         };
@@ -341,17 +357,23 @@ var TSOS;
                     _StdOut.advanceLine();
                     _StdOut.putText("PID: " + _currentPID);
                     _currentPID++;
+                    //Get the available memory segment and save it in the PCB
+                    pcb.memSegment = _MemoryManager.getAvailableMem();
+                    //Flip the memory segment to be no longer available
+                    _MemoryManager.changeAvailabilityStatus(pcb.memSegment);
                     //This replaces all spaces with nothing to get the input into the proper format
                     userInput = userInput.replace(/\s/g, "");
-                    //This line is used to test that the input is properly formated before passing it
-                    //_StdOut.putText(userInput);
                     //Write the program to memory 
-                    _MemoryAccessor.writeMem(userInput);
+                    _MemoryAccessor.writeMem(userInput, pcb.memSegment);
                     //Print the program in memory on the screen 
                     _MemoryAccessor.writeMemtoScreen();
                 }
+                else {
+                    _StdOut.putText("No memory available");
+                }
             }
         };
+        //This will run only the specified process 
         Shell.prototype.shellRun = function (args) {
             if (args.length > 0) {
                 var pid = parseInt(args);
@@ -363,6 +385,25 @@ var TSOS;
                 }
             }
         };
+        //Clears ALL memory partitions
+        Shell.prototype.shellClearMem = function (args) {
+        };
+        //Runs all current processes in memory
+        Shell.prototype.shellRunAll = function (args) {
+        };
+        //Displays the PID and state of all processes
+        Shell.prototype.shellPS = function (args) {
+        };
+        //Kills the specificed Process
+        Shell.prototype.shellKill = function (args) {
+        };
+        //Kills all currently running Processes
+        Shell.prototype.shellKillAll = function (args) {
+        };
+        //Sets the Round Robin Quantum 
+        Shell.prototype.shellQuantum = function (args) {
+        };
+        //This will eventually give the blue screen of death maybe
         Shell.prototype.bsod = function () {
         };
         return Shell;

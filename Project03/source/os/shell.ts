@@ -86,39 +86,39 @@ module TSOS {
             this.commandList[this.commandList.length] = sc;
 
             //Update Status
-            sc = new ShellCommand(this.statusUpdate, "status", "<string> -Updates the Current Status");
+            sc = new ShellCommand(this.statusUpdate, "status", "<string> - Updates the Current Status");
             this.commandList[this.commandList.length] = sc;
 
             //Load OP codes into memory
-            sc = new ShellCommand(this.shellLoad, "load", "Checks to make sure all numbers are hex and loads them into memory");
+            sc = new ShellCommand(this.shellLoad, "load", "- Checks to make sure all numbers are hex and loads them into memory");
             this.commandList[this.commandList.length] = sc;
 
             //Run an code from memory 
-            sc = new ShellCommand(this.shellRun, "run", "<PID> -Runs the selected process");
+            sc = new ShellCommand(this.shellRun, "run", "<PID> - Runs the selected process");
             this.commandList[this.commandList.length] = sc;
             
             //Clear all memory partitions
-            sc = new ShellCommand(this.shellClearMem, "clearmem", "Clear all memory partitions");
+            sc = new ShellCommand(this.shellClearMem, "clearmem", "- Clear all memory partitions");
             this.commandList[this.commandList.length] = sc;
 
             //Run all Processes
-            sc = new ShellCommand(this.shellRunAll, "runall", "Runs all current process in memory");
+            sc = new ShellCommand(this.shellRunAll, "runall", "- Runs all current process in memory");
             this.commandList[this.commandList.length] = sc;
 
             //Displays the PID and state of all Processes
-            sc = new ShellCommand(this.shellPS, "ps", "Displays the PID and state of all Processes");
+            sc = new ShellCommand(this.shellPS, "ps", "- Displays the PID and state of all Processes");
             this.commandList[this.commandList.length] = sc;
 
             //Kills the specified Process
-            sc = new ShellCommand(this.shellKill, "kill", "<PID> -Kills the specified Process");
+            sc = new ShellCommand(this.shellKill, "kill", "<PID> - Kills the specified Process");
             this.commandList[this.commandList.length] = sc;
 
             //Kills all the currently running processes
-            sc = new ShellCommand(this.shellKillAll, "killall", "Kills all currently running processes");
+            sc = new ShellCommand(this.shellKillAll, "killall", "- Kills all currently running processes");
             this.commandList[this.commandList.length] = sc;
 
             //Sets the quantum for Round Robin scheduling 
-            sc = new ShellCommand(this.shellQuantum, "quantum", "<Int> -Sets the Quantum for Round Robin Scheduling");
+            sc = new ShellCommand(this.shellQuantum, "quantum", "<Int> - Sets the Quantum for Round Robin Scheduling");
             this.commandList[this.commandList.length] = sc;
 
 
@@ -412,15 +412,22 @@ module TSOS {
                     _StdOut.putText("PID: " + _currentPID);
                     _currentPID ++;
 
-                    //This replaces all spaces with nothing to get the input into the proper format
+                    //Get the available memory segment and save it in the PCB
+                   pcb.memSegment = _MemoryManager.getAvailableMem();
+
+                   //Flip the memory segment to be no longer available
+                   _MemoryManager.changeAvailabilityStatus(pcb.memSegment);
+                    
+                   //This replaces all spaces with nothing to get the input into the proper format
                     userInput = userInput.replace(/\s/g, "");
-                    //This line is used to test that the input is properly formated before passing it
-                    //_StdOut.putText(userInput);
 
                     //Write the program to memory 
-                    _MemoryAccessor.writeMem(userInput);
+                    _MemoryAccessor.writeMem(userInput, pcb.memSegment);
                     //Print the program in memory on the screen 
                     _MemoryAccessor.writeMemtoScreen();
+                }
+                else{
+                    _StdOut.putText("No memory available")
                 }
             }
         }

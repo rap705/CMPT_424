@@ -1,33 +1,49 @@
-/*
-Class Description Goes Here
-*/
 var TSOS;
 (function (TSOS) {
     var MemoryAccessor = /** @class */ (function () {
         function MemoryAccessor() {
         }
         MemoryAccessor.prototype.read = function (address) {
-            return _Memory.memRange1[address];
+            return _Memory.memRange[address];
         };
         /*
             This code writes the original user input into memory
             By iterating through every two numbers/letters in the user input and increase the memory storage spot by
             1 each time
         */
-        MemoryAccessor.prototype.writeMem = function (data) {
+        MemoryAccessor.prototype.writeMem = function (data, segment) {
             var opCodeCounter = 0;
             if (data.length / 2 <= 256) {
-                for (var i = 0; i < data.length / 2; i++) {
-                    _Memory.memRange1[i] = data.substring(opCodeCounter, opCodeCounter + 2);
-                    opCodeCounter += 2;
+                if (segment === 0) {
+                    for (var i = 0; i < data.length / 2; i++) {
+                        _Memory.memRange[i] = data.substring(opCodeCounter, opCodeCounter + 2);
+                        opCodeCounter += 2;
+                    }
                 }
+                if (segment === 1) {
+                    for (var i = 256; i < (data.length + 256); i++) {
+                        _Memory.memRange[i] = data.substring(opCodeCounter, opCodeCounter + 2);
+                        opCodeCounter += 2;
+                        i++;
+                    }
+                }
+                if (segment === 2) {
+                    for (var i = 512; i < (data.length + 512); i++) {
+                        _Memory.memRange[i] = data.substring(opCodeCounter, opCodeCounter + 2);
+                        opCodeCounter += 2;
+                        i++;
+                    }
+                }
+            }
+            else {
+                _StdOut.putText("Process is to large. Failed to Store in Memory");
             }
         };
         /*
             This code will write to a specific spot in memory
         */
         MemoryAccessor.prototype.write = function (address, data) {
-            _Memory.memRange1[address] = data;
+            _Memory.memRange[address] = data;
         };
         /*
            Create a table and draw it to the screen
@@ -36,7 +52,7 @@ var TSOS;
        */
         MemoryAccessor.prototype.writeMemtoScreen = function () {
             var memTable = "<table id=memory>";
-            for (var i = 0; i < _Memory.memRange1.length; i++) {
+            for (var i = 0; i < _Memory.memRange.length; i++) {
                 if (i == 0) {
                     memTable += "<tr><td>" + "0x" + ((i).toString(16).toUpperCase()).padStart(3, "0") + "</td>";
                 }
@@ -45,7 +61,7 @@ var TSOS;
                         memTable += "<tr><td>" + "0x" + ((i).toString(16).toUpperCase()).padStart(3, "0") + "</td>";
                     }
                 }
-                memTable += "<td>" + _Memory.memRange1[i] + "</td>";
+                memTable += "<td>" + _Memory.memRange[i] + "</td>";
             }
             document.getElementById("divMemTable").innerHTML = memTable;
         };
