@@ -90,14 +90,37 @@ module TSOS {
             this.commandList[this.commandList.length] = sc;
 
             //Load OP codes into memory
-            sc = new ShellCommand(this.shellLoad, "load", "Checks to make sure all numbers are hex");
+            sc = new ShellCommand(this.shellLoad, "load", "Checks to make sure all numbers are hex and loads them into memory");
             this.commandList[this.commandList.length] = sc;
 
             //Run an code from memory 
-            sc = new ShellCommand(this.shellRun, "run", "<PID> Checks to make sure all numbers are hex");
+            sc = new ShellCommand(this.shellRun, "run", "<PID> -Runs the selected process");
             this.commandList[this.commandList.length] = sc;
-            // ps  - list the running processes and their IDs
-            // kill <id> - kills the specified process id.
+            
+            //Clear all memory partitions
+            sc = new ShellCommand(this.shellClearMem, "clearmem", "Clear all memory partitions");
+            this.commandList[this.commandList.length] = sc;
+
+            //Run all Processes
+            sc = new ShellCommand(this.shellRunAll, "runall", "Runs all current process in memory");
+            this.commandList[this.commandList.length] = sc;
+
+            //Displays the PID and state of all Processes
+            sc = new ShellCommand(this.shellPS, "ps", "Displays the PID and state of all Processes");
+            this.commandList[this.commandList.length] = sc;
+
+            //Kills the specified Process
+            sc = new ShellCommand(this.shellKill, "kill", "<PID> -Kills the specified Process");
+            this.commandList[this.commandList.length] = sc;
+
+            //Kills all the currently running processes
+            sc = new ShellCommand(this.shellKillAll, "killall", "Kills all currently running processes");
+            this.commandList[this.commandList.length] = sc;
+
+            //Sets the quantum for Round Robin scheduling 
+            sc = new ShellCommand(this.shellQuantum, "quantum", "<Int> -Sets the Quantum for Round Robin Scheduling");
+            this.commandList[this.commandList.length] = sc;
+
 
             // Display the initial prompt.
             this.putPrompt();
@@ -401,6 +424,8 @@ module TSOS {
                 }
             }
         }
+
+        //This will run only the specified process 
         public shellRun(args: string){
             if(args.length > 0){
                 let pid = parseInt(args);
@@ -413,6 +438,38 @@ module TSOS {
                 
             }
         }
+
+        //Clears ALL memory partitions
+        public shellClearMem(args: string){
+            
+        }
+
+        //Runs all current processes in memory
+        public shellRunAll(args: string){
+            
+        }
+
+        //Displays the PID and state of all processes
+        public shellPS(args: string){
+            
+        }
+
+        //Kills the specificed Process
+        public shellKill(args: string){
+            
+        }
+
+        //Kills all currently running Processes
+        public shellKillAll(args: string){
+            
+        }
+
+        //Sets the Round Robin Quantum 
+        public shellQuantum(args: string){
+            
+        }
+
+        //This will eventually give the blue screen of death maybe
         public bsod(): void{
             
         }
