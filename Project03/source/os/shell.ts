@@ -438,6 +438,7 @@ module TSOS {
                 let pid = parseInt(args);
                if(_PCBCon[pid]){ 
                     _CPU.isExecuting = true;
+                    _CurrentPCB = _PCBCon[pid];
                }
                else{
                    _StdOut.putText("Not a valid PID");

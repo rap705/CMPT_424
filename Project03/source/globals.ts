@@ -53,6 +53,7 @@ var _MemoryManager: any = null;
 //Memory
 var _currentPID: number = 0;
 var _PCBCon= [];
+var _CurrentPCB;
 
 // Standard input and output
 var _StdIn:  TSOS.Console = null; 
