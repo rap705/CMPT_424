@@ -82,7 +82,7 @@ var TSOS;
                     _Memory.memRange[address] = data;
                 }
                 else {
-                    _Memory.memRange[address] = data;
+                    _Memory.memRange[(address + 256)] = data;
                 }
             }
             else if (_CurrentPCB.memSegment === 2) {
@@ -91,7 +91,7 @@ var TSOS;
                     _Memory.memRange[address] = data;
                 }
                 else {
-                    _Memory.memRange[address] = data;
+                    _Memory.memRange[(address + 512)] = data;
                 }
             }
         };
