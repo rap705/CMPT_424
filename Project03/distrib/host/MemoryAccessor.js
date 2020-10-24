@@ -47,13 +47,13 @@ var TSOS;
                     }
                 }
                 if (segment === 1) {
-                    for (var i = 256; i < (data.length + 256); i++) {
+                    for (var i = 256; i < ((data.length / 2) + 256); i++) {
                         _Memory.memRange[i] = data.substring(opCodeCounter, opCodeCounter + 2);
                         opCodeCounter += 2;
                     }
                 }
                 if (segment === 2) {
-                    for (var i = 512; i < (data.length + 512); i++) {
+                    for (var i = 512; i < ((data.length / 2) + 512); i++) {
                         _Memory.memRange[i] = data.substring(opCodeCounter, opCodeCounter + 2);
                         opCodeCounter += 2;
                     }
