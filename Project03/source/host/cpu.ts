@@ -98,21 +98,27 @@ module TSOS {
         //Load the Accumulator with a value from memory
         public loadAccMem(): void{
             let location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
-            this.Acc = parseInt(_MemoryAccessor.read(location1), 16);
+            let location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            let finalLocation = location1 + location2;
+            this.Acc = parseInt(_MemoryAccessor.read(finalLocation), 16);
             this.PC += 3;
         }
 
         //Store the Accumulator in memory
         public storeAccMem(): void{
             let location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
-            _MemoryAccessor.write(location1, this.Acc);
+            let location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            let finalLocation = location1 + location2;
+            _MemoryAccessor.write(finalLocation, this.Acc);
             this.PC += 3;
         }
 
         //Add a value to the accumulator value.  If its over 255 roll back to 0
         public addAcc(): void{
             let location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
-            let addVal = parseInt(_MemoryAccessor.read(location1), 16);
+            let location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            let finalLocation = location1 + location2;
+            let addVal = parseInt(_MemoryAccessor.read(finalLocation), 16);
             this.Acc += addVal;
             if(this.Acc >= 256){
                 this.Acc %= 256;
@@ -128,8 +134,10 @@ module TSOS {
 
         //Load the X-Reg from memory
         public loadXRegMem(): void{
-            let location1 = parseInt(_MemoryAccessor.read(this.PC+1), 16);
-            this.Xreg = parseInt(_MemoryAccessor.read(location1));
+            let location1 = parseInt(_MemoryAccessor.read(this.PC+1), 16)
+            let location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            let finalLocation = location1 + location2;;
+            this.Xreg = parseInt(_MemoryAccessor.read(finalLocation));
             this.PC += 3;
         }
 
@@ -142,7 +150,9 @@ module TSOS {
         //Load the Y-Reg from memory
         public loadYRegMem(): void{
             let location1 = parseInt(_MemoryAccessor.read(this.PC+1), 16);
-            this.Yreg = parseInt(_MemoryAccessor.read(location1));
+            let location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            let finalLocation = location1 + location2;
+            this.Yreg = parseInt(_MemoryAccessor.read(finalLocation));
             this.PC += 3;
         }
 
@@ -154,7 +164,9 @@ module TSOS {
         //Compare a byte in memory to the X-Reg
         public compareByte(): void{
             var location1 = parseInt(_MemoryAccessor.read(this.PC+1), 16);
-            var compValue = parseInt(_MemoryAccessor.read(location1), 16);
+            let location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            let finalLocation = location1 + location2;
+            var compValue = parseInt(_MemoryAccessor.read(finalLocation), 16);
             if(this.Xreg == compValue){
                 this.Zflag = 1;
             }
@@ -181,9 +193,11 @@ module TSOS {
         //Increment the value of a byte
         public increment(): void{
             var location1 = parseInt(_MemoryAccessor.read(this.PC+1), 16);
-            var value = parseInt(_MemoryAccessor.read(location1), 16);
+            let location2 = parseInt(_MemoryAccessor.read(this.PC + 2), 16);
+            let finalLocation = location1 + location2;
+            var value = parseInt(_MemoryAccessor.read(finalLocation), 16);
             value++;
-            _MemoryAccessor.write(location1, value.toString(16));
+            _MemoryAccessor.write(finalLocation, value.toString(16));
             this.PC += 3;
         }
     }
