@@ -437,6 +437,7 @@ module TSOS {
             if(args.length > 0){
                 let pid = parseInt(args);
                if(_PCBCon[pid]){ 
+                    _CPU.init();
                     _CPU.isExecuting = true;
                     _CurrentPCB = _PCBCon[pid];
                }

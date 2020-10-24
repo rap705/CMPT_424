@@ -4,7 +4,35 @@ var TSOS;
         function MemoryAccessor() {
         }
         MemoryAccessor.prototype.read = function (address) {
-            return _Memory.memRange[address];
+            if (_CurrentPCB.memSegment === 0) {
+                if (address >= 255) {
+                    address -= 255;
+                    return _Memory.memRange[address];
+                }
+                else {
+                    return _Memory.memRange[address];
+                }
+            }
+            else if (_CurrentPCB.memSegment === 1) {
+                if ((address + 256) % 256 != 0) {
+                    address %= 256;
+                    address += 256;
+                    return _Memory.memRange[address];
+                }
+                else {
+                    return _Memory.memRange[(address + 256)];
+                }
+            }
+            else if (_CurrentPCB.memSegment === 2) {
+                if ((address + 512) % 512 != 0) {
+                    address %= 512;
+                    address += 512;
+                    return _Memory.memRange[address];
+                }
+                else {
+                    return _Memory.memRange[(address + 512)];
+                }
+            }
         };
         /*
             This code writes the original user input into memory

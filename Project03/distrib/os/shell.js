@@ -378,7 +378,9 @@ var TSOS;
             if (args.length > 0) {
                 var pid = parseInt(args);
                 if (_PCBCon[pid]) {
+                    _CPU.init();
                     _CPU.isExecuting = true;
+                    _CurrentPCB = _PCBCon[pid];
                 }
                 else {
                     _StdOut.putText("Not a valid PID");

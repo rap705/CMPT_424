@@ -7,6 +7,9 @@ var TSOS;
             this.pcbStatus = "Ready";
             this.pcbPriority = 10;
             this.memSegment;
+            this.PC = 0;
+            this.base = 0;
+            this.limit = 256;
         }
         return ProcessControlBlock;
     }());
