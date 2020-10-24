@@ -101,6 +101,25 @@ var TSOS;
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
         };
+        //This will start the single step process
+        Control.hostBtnToggleSingleStep_click = function (btn) {
+            if (_SingleStep) {
+                _CPU.isExecuting = true;
+                _SingleStep = false;
+                btn.value = "Single Step Off";
+                document.getElementById("btnSingleStep").disabled = true;
+            }
+            else {
+                _CPU.isExecuting = false;
+                _SingleStep = true;
+                btn.value = "Single Step On";
+                document.getElementById("btnSingleStep").disabled = false;
+            }
+        };
+        //This will step to the next OP Code
+        Control.hostBtnSingleStep_click = function (btn) {
+            _CPU.isExecuting = true;
+        };
         return Control;
     }());
     TSOS.Control = Control;

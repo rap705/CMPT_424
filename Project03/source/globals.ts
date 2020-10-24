@@ -55,6 +55,9 @@ var _currentPID: number = 0;
 var _PCBCon= [];
 var _CurrentPCB;
 
+//Single Step
+var _SingleStep = false;
+
 // Standard input and output
 var _StdIn:  TSOS.Console = null; 
 var _StdOut: TSOS.Console = null;

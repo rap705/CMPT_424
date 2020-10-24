@@ -42,6 +42,8 @@ var _MemoryManager = null;
 var _currentPID = 0;
 var _PCBCon = [];
 var _CurrentPCB;
+//Single Step
+var _SingleStep = false;
 // Standard input and output
 var _StdIn = null;
 var _StdOut = null;

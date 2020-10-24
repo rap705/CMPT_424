@@ -88,6 +88,9 @@ module TSOS {
                         break;
                 }
                 _MemoryAccessor.updateCPUDis(opCode);
+                if(_SingleStep){
+                    this.isExecuting = false;
+                }
             }
         }
         //Load the Accumulator with the next value
