@@ -86,6 +86,7 @@ module TSOS {
             // .. enable the Halt and Reset buttons ...
             (<HTMLButtonElement>document.getElementById("btnHaltOS")).disabled = false;
             (<HTMLButtonElement>document.getElementById("btnReset")).disabled = false;
+            (<HTMLButtonElement>document.getElementById("btnToggleSingleStep")).disabled = false;
 
             // .. set focus on the OS console display ...
             document.getElementById("display").focus();

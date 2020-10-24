@@ -5,8 +5,8 @@ var TSOS;
         }
         MemoryAccessor.prototype.read = function (address) {
             if (_CurrentPCB.memSegment === 0) {
-                if (address >= 255) {
-                    address -= 255;
+                if (address >= 256) {
+                    address -= 256;
                     return _Memory.memRange[address];
                 }
                 else {
@@ -14,9 +14,8 @@ var TSOS;
                 }
             }
             else if (_CurrentPCB.memSegment === 1) {
-                if ((address + 256) % 256 != 0) {
-                    address %= 256;
-                    address += 256;
+                if (address >= 512) {
+                    address -= 256;
                     return _Memory.memRange[address];
                 }
                 else {
@@ -24,9 +23,8 @@ var TSOS;
                 }
             }
             else if (_CurrentPCB.memSegment === 2) {
-                if ((address + 512) % 512 != 0) {
-                    address %= 512;
-                    address += 512;
+                if (address >= 768) {
+                    address -= 256;
                     return _Memory.memRange[address];
                 }
                 else {
@@ -52,14 +50,12 @@ var TSOS;
                     for (var i = 256; i < (data.length + 256); i++) {
                         _Memory.memRange[i] = data.substring(opCodeCounter, opCodeCounter + 2);
                         opCodeCounter += 2;
-                        i++;
                     }
                 }
                 if (segment === 2) {
                     for (var i = 512; i < (data.length + 512); i++) {
                         _Memory.memRange[i] = data.substring(opCodeCounter, opCodeCounter + 2);
                         opCodeCounter += 2;
-                        i++;
                     }
                 }
             }
@@ -71,7 +67,33 @@ var TSOS;
             This code will write to a specific spot in memory
         */
         MemoryAccessor.prototype.write = function (address, data) {
-            _Memory.memRange[address] = data;
+            if (_CurrentPCB.memSegment === 0) {
+                if (address >= 256) {
+                    address -= 256;
+                    _Memory.memRange[address] = data;
+                }
+                else {
+                    _Memory.memRange[address] = data;
+                }
+            }
+            else if (_CurrentPCB.memSegment === 1) {
+                if (address >= 512) {
+                    address -= 256;
+                    _Memory.memRange[address] = data;
+                }
+                else {
+                    _Memory.memRange[address] = data;
+                }
+            }
+            else if (_CurrentPCB.memSegment === 2) {
+                if (address >= 768) {
+                    address -= 256;
+                    _Memory.memRange[address] = data;
+                }
+                else {
+                    _Memory.memRange[address] = data;
+                }
+            }
         };
         /*
            Create a table and draw it to the screen
