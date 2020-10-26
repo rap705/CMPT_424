@@ -405,6 +405,13 @@ var TSOS;
         };
         //Displays the PID and state of all processes
         Shell.prototype.shellPS = function (args) {
+            for (var i = 0; i < _CurrentStoredPCB.length; i++) {
+                var pid = _CurrentStoredPCB[i].PID.toString();
+                _StdOut.putText("PID: " + pid);
+                var state = _CurrentStoredPCB[i].state.toString();
+                _StdOut.putText("  State: " + state);
+                _StdOut.advanceLine();
+            }
         };
         //Kills the specificed Process
         Shell.prototype.shellKill = function (args) {

@@ -470,7 +470,13 @@ module TSOS {
 
         //Displays the PID and state of all processes
         public shellPS(args: string){
-            
+            for(let i = 0; i < _CurrentStoredPCB.length; i++){
+                let pid = _CurrentStoredPCB[i].PID.toString();
+                _StdOut.putText("PID: " + pid);
+                let state = _CurrentStoredPCB[i].state.toString();
+                _StdOut.putText("  State: " + state);
+                _StdOut.advanceLine();
+            }
         }
 
         //Kills the specificed Process
