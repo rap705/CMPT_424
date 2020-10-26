@@ -43,6 +43,7 @@ module TSOS {
         public execute(check){
             if(check){
                 let opCode = _MemoryAccessor.read(this.PC);
+                _CurrentPCB.state = "Running";
                 switch(opCode){
                     case "A9":
                         this.loadAcc();

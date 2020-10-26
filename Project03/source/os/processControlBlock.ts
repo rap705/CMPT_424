@@ -2,21 +2,28 @@ module TSOS{
 
     export class ProcessControlBlock{
 
-        public pcbStatus;
         public pcbPriority;
         public memSegment;
         public PC;
-        public base;
-        public limit;
+        public IR;
+        public Acc;
+        public X;
+        public Y;
+        public Z;
+        public state;
+
 
         constructor(public PID : number){
             this.PID = PID;
-            this.pcbStatus = "Ready"
             this.pcbPriority = 10;
             this.memSegment;
             this.PC = 0;
-            this.base = 0;
-            this.limit = 256;
+            this.IR;
+            this.Acc;
+            this.X;
+            this.Y;
+            this.Z;
+            this.state = "Ready";
         }
     }
 }

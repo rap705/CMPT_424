@@ -44,6 +44,7 @@ var TSOS;
         Cpu.prototype.execute = function (check) {
             if (check) {
                 var opCode = _MemoryAccessor.read(this.PC);
+                _CurrentPCB.state = "Running";
                 switch (opCode) {
                     case "A9":
                         this.loadAcc();

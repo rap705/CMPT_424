@@ -29,6 +29,8 @@ const SYSTEM_CALL: number = 3;
 var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 var _Memory: TSOS.Memory;
 var _MemoryAccessor: TSOS.MemoryAccessor;
+var _Scheduler: TSOS.scheduler;
+var _Dispatcher: TSOS.dispatcher;
 
 
 var _OSclock: number = 0;  // Page 23.
@@ -57,6 +59,11 @@ var _CurrentPCB;
 
 //Single Step
 var _SingleStep = false;
+
+//Scheduler
+var _CurrentStoredPCB = [];
+var _ScheduleCounter = 0;
+var _Quantum = 6;
 
 // Standard input and output
 var _StdIn:  TSOS.Console = null; 

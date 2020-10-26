@@ -361,6 +361,8 @@ var TSOS;
                     pcb.memSegment = _MemoryManager.getAvailableMem();
                     //Flip the memory segment to be no longer available
                     _MemoryManager.changeAvailabilityStatus(pcb.memSegment);
+                    //Add the PCB to the Current Stored PCB Container
+                    _CurrentStoredPCB[pcb.memSegment] = pcb;
                     //This replaces all spaces with nothing to get the input into the proper format
                     userInput = userInput.replace(/\s/g, "");
                     //Write the program to memory 
@@ -377,7 +379,7 @@ var TSOS;
         Shell.prototype.shellRun = function (args) {
             if (args.length > 0) {
                 var pid = parseInt(args);
-                if (_PCBCon[pid]) {
+                if (_CurrentStoredPCB[pid]) {
                     _CPU.init();
                     _CPU.isExecuting = true;
                     _CurrentPCB = _PCBCon[pid];

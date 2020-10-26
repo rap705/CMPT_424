@@ -417,12 +417,16 @@ module TSOS {
 
                    //Flip the memory segment to be no longer available
                    _MemoryManager.changeAvailabilityStatus(pcb.memSegment);
+
+                   //Add the PCB to the Current Stored PCB Container
+                   _CurrentStoredPCB[pcb.memSegment] = pcb;
                     
                    //This replaces all spaces with nothing to get the input into the proper format
                     userInput = userInput.replace(/\s/g, "");
 
                     //Write the program to memory 
                     _MemoryAccessor.writeMem(userInput, pcb.memSegment);
+
                     //Print the program in memory on the screen 
                     _MemoryAccessor.writeMemtoScreen();
                 }
@@ -436,7 +440,7 @@ module TSOS {
         public shellRun(args: string){
             if(args.length > 0){
                 let pid = parseInt(args);
-               if(_PCBCon[pid]){ 
+               if(_CurrentStoredPCB[pid]){ 
                     _CPU.init();
                     _CPU.isExecuting = true;
                     _CurrentPCB = _PCBCon[pid];
