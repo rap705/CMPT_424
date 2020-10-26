@@ -75,7 +75,7 @@ var TSOS;
             }
             else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
                 //_CPU.cycle();
-                if (_Running >= 1) {
+                if (_Running >= 2) {
                     if (_ScheduleCounter >= _Quantum) {
                         TSOS.scheduler.roundRobin();
                         _ScheduleCounter = 0;
@@ -84,6 +84,9 @@ var TSOS;
                         _ScheduleCounter++;
                         _CPU.cycle();
                     }
+                }
+                else {
+                    _CPU.cycle();
                 }
             }
             else { // If there are no interrupts and there is nothing being executed then just be idle.
