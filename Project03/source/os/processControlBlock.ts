@@ -11,6 +11,8 @@ module TSOS{
         public Y;
         public Z;
         public state;
+        public base;
+        public limit;
 
 
         constructor(public PID : number){
@@ -24,6 +26,8 @@ module TSOS{
             this.Y = 0;
             this.Z = 0;
             this.state = "Resident";
+            this.base = 0;
+            this.limit = 0;
         }
     }
 }
