@@ -134,6 +134,38 @@ var TSOS;
             document.getElementById("YReg").innerHTML = _CPU.Yreg.toString();
             document.getElementById("ZFlag").innerHTML = _CPU.Zflag.toString();
         };
+        MemoryAccessor.prototype.updateProcessDis = function (opCode) {
+            var tableBody = document.getElementById("processBody");
+            tableBody.innerHTML = "";
+            for (var i = 0; i < _CurrentStoredPCB.length; i++) {
+                var td = document.createElement("td");
+                var tr = document.createElement("tr");
+                td.innerHTML = _CurrentStoredPCB[i].PID.toString();
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].PC;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].Acc;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].X;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].Y;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].Z;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].state;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].memSegment.toString();
+                tr.appendChild(td);
+                tableBody.appendChild(tr);
+            }
+        };
         return MemoryAccessor;
     }()); //End MemoryAccessor class
     TSOS.MemoryAccessor = MemoryAccessor;

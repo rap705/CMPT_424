@@ -51,6 +51,10 @@ h3 {
   float: right;
 }
 
+#divProccessDisplay{
+  float: right;
+}
+
 #divCPU{
-  float: left;
+  float: right;
 }

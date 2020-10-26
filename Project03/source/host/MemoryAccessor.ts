@@ -134,6 +134,38 @@ module TSOS {
             document.getElementById("YReg").innerHTML = _CPU.Yreg.toString();
             document.getElementById("ZFlag").innerHTML = _CPU.Zflag.toString();
         }
+        public updateProcessDis(opCode){
+            let tableBody = document.getElementById("processBody");
+            tableBody.innerHTML= "";
+            for(let i=0; i < _CurrentStoredPCB.length; i++){
+                let td = document.createElement("td");
+                let tr = document.createElement("tr");
+                td.innerHTML = _CurrentStoredPCB[i].PID.toString();
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].PC;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].Acc;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].X;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].Y;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].Z;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].state;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = _CurrentStoredPCB[i].memSegment.toString();
+                tr.appendChild(td);
+                tableBody.appendChild(tr);
+            }
+        }
     }//End MemoryAccessor class
     
 }//End TSOS module

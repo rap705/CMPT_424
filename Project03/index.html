@@ -101,6 +101,30 @@
       </canvas>
    </div>
 
+   <div id="divCPU">
+      <label>CPU</label>
+      <table id="CPUStatus">
+         <thead>
+         <tr>
+               <th>PC</th>
+               <th>IR</th>
+               <th>Acc</th>
+               <th>XReg</th>
+               <th>YReg</th>
+               <th>ZFlag</th>
+            </tr>
+         </thead>
+         <tr>
+            <td id="PC"> </td>
+            <td id="IR"> </td>
+            <td id="Acc"> </td>
+            <td id="XReg"> </td>
+            <td id="YReg"> </td>
+            <td id="ZFlag"> </td>
+         </tr>
+      </table>
+   </div>
+
    <div id="divLog" style="margin-left:520px;">
       <label>
          Host Log
@@ -113,6 +137,27 @@
       </label>
    </div>
 
+   <div id="divProccessDisplay">
+      <label>Process Display</label>
+      <table id="ProcessStatus">
+         <thead>
+            <tr>
+               <th>PID</th>
+               <th>PC</th>
+               <th>Acc</th>
+               <th>XReg</th>
+               <th>YReg</th>
+               <th>ZFlag</th>
+               <th>State</th>
+               <th>Memory Segment</th>
+            </tr>
+         </thead>
+         <tbody id="processBody">
+
+         </tbody>
+      </table>
+   </div>
+
    <div id="divUserProgramInput" style="margin-left:520px;">
       <label>
          User Program Input
@@ -123,28 +168,6 @@
                    cols="48"
          ></textarea>
       </label>
-   </div>
-
-   <div id="divCPU">
-      <label>CPU</label>
-      <table id="CPUStatus">
-         <tr>
-            <td>PC</td>
-            <td>IR</td>
-            <td>Acc</td>
-            <td>XReg</td>
-            <td>YReg</td>
-            <td>ZFlag</td>
-         </tr>
-         <tr>
-            <td id="PC"> </td>
-            <td id="IR"> </td>
-            <td id="Acc"> </td>
-            <td id="XReg"> </td>
-            <td id="YReg"> </td>
-            <td id="ZFlag"> </td>
-         </tr>
-      </table>
    </div>
    
    <div id="divMem">

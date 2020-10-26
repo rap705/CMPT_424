@@ -91,6 +91,7 @@ var TSOS;
                         break;
                 }
                 _MemoryAccessor.updateCPUDis(opCode);
+                _MemoryAccessor.updateProcessDis(opCode);
                 if (_SingleStep) {
                     this.isExecuting = false;
                 }
