@@ -134,7 +134,7 @@ var TSOS;
             document.getElementById("YReg").innerHTML = _CPU.Yreg.toString();
             document.getElementById("ZFlag").innerHTML = _CPU.Zflag.toString();
         };
-        MemoryAccessor.prototype.updateProcessDis = function (opCode) {
+        MemoryAccessor.prototype.updateProcessDis = function () {
             var tableBody = document.getElementById("processBody");
             tableBody.innerHTML = "";
             for (var i = 0; i < _CurrentStoredPCB.length; i++) {

@@ -90,7 +90,7 @@ module TSOS {
                         break;
                 }
                 _MemoryAccessor.updateCPUDis(opCode);
-                _MemoryAccessor.updateProcessDis(opCode);
+                _MemoryAccessor.updateProcessDis();
                 if(_SingleStep){
                     this.isExecuting = false;
                 }

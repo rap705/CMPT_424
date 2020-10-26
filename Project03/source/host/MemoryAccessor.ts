@@ -134,7 +134,11 @@ module TSOS {
             document.getElementById("YReg").innerHTML = _CPU.Yreg.toString();
             document.getElementById("ZFlag").innerHTML = _CPU.Zflag.toString();
         }
-        public updateProcessDis(opCode){
+
+        /*
+        This code will update the Process Display by getting all processes currently in memory
+        */
+        public updateProcessDis(){
             let tableBody = document.getElementById("processBody");
             tableBody.innerHTML= "";
             for(let i=0; i < _CurrentStoredPCB.length; i++){

@@ -369,6 +369,8 @@ var TSOS;
                     _MemoryAccessor.writeMem(userInput, pcb.memSegment);
                     //Print the program in memory on the screen 
                     _MemoryAccessor.writeMemtoScreen();
+                    //Print the Process to screen
+                    _MemoryAccessor.updateProcessDis();
                 }
                 else {
                     _StdOut.putText("No memory available");
