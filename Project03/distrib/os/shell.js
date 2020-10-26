@@ -391,7 +391,8 @@ var TSOS;
             }
         };
         //Clears ALL memory partitions
-        Shell.prototype.shellClearMem = function (args) {
+        Shell.prototype.shellClearMem = function () {
+            _MemoryAccessor.clearMem();
         };
         //Runs all current processes in memory
         Shell.prototype.shellRunAll = function (args) {
@@ -413,6 +414,10 @@ var TSOS;
         };
         //Sets the Round Robin Quantum 
         Shell.prototype.shellQuantum = function (args) {
+            var quantum = parseInt(args);
+            _Quantum = quantum;
+            _StdOut.putText("Quantum set to " + _Quantum);
+            _StdOut.advanceLine();
         };
         //This will eventually give the blue screen of death maybe
         Shell.prototype.bsod = function () {

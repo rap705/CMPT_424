@@ -115,6 +115,12 @@ var TSOS;
             }
             document.getElementById("divMemTable").innerHTML = memTable;
         };
+        MemoryAccessor.prototype.clearMem = function () {
+            for (var i = 0; i < 768; i++) {
+                _Memory.memRange[i] = "00";
+            }
+            this.writeMemtoScreen();
+        };
         /*
             This code updates the CPU display
             I was not sure which class to put this code in and will probably move it to

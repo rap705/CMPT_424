@@ -454,8 +454,8 @@ module TSOS {
         }
 
         //Clears ALL memory partitions
-        public shellClearMem(args: string){
-            
+        public shellClearMem(): void{
+            _MemoryAccessor.clearMem();
         }
 
         //Runs all current processes in memory
@@ -485,7 +485,10 @@ module TSOS {
 
         //Sets the Round Robin Quantum 
         public shellQuantum(args: string){
-            
+            let quantum = parseInt(args);
+            _Quantum = quantum;
+            _StdOut.putText("Quantum set to "+_Quantum);
+            _StdOut.advanceLine();
         }
 
         //This will eventually give the blue screen of death maybe
