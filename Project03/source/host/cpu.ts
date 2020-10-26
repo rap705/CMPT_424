@@ -154,6 +154,19 @@ module TSOS {
 
         //Break(which is really just a system call)
         public break(): void{
+            _CurrentPCB.state = "Terminated"
+            if(_CurrentPCB.PID === _CurrentStoredPCB[0].PID){
+                _CurrentStoredPCB[0] = _CurrentPCB;
+                _MemoryAccessor.updateProcessDis();
+            }
+            else if(_CurrentPCB.PID === _CurrentStoredPCB[1].PID){
+                _CurrentStoredPCB[1] = _CurrentPCB;
+                _MemoryAccessor.updateProcessDis();
+            }
+            else{
+                _CurrentStoredPCB[2] = _CurrentPCB;
+                _MemoryAccessor.updateProcessDis();
+            }
             this.isExecuting = false;
         }
 

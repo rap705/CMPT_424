@@ -148,6 +148,19 @@ var TSOS;
         };
         //Break(which is really just a system call)
         Cpu.prototype["break"] = function () {
+            _CurrentPCB.state = "Terminated";
+            if (_CurrentPCB.PID === _CurrentStoredPCB[0].PID) {
+                _CurrentStoredPCB[0] = _CurrentPCB;
+                _MemoryAccessor.updateProcessDis();
+            }
+            else if (_CurrentPCB.PID === _CurrentStoredPCB[1].PID) {
+                _CurrentStoredPCB[1] = _CurrentPCB;
+                _MemoryAccessor.updateProcessDis();
+            }
+            else {
+                _CurrentStoredPCB[2] = _CurrentPCB;
+                _MemoryAccessor.updateProcessDis();
+            }
             this.isExecuting = false;
         };
         //Compare a byte in memory to the X-Reg

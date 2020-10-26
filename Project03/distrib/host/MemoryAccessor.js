@@ -134,6 +134,9 @@ var TSOS;
             document.getElementById("YReg").innerHTML = _CPU.Yreg.toString();
             document.getElementById("ZFlag").innerHTML = _CPU.Zflag.toString();
         };
+        /*
+        This code will update the Process Display by getting all processes currently in memory
+        */
         MemoryAccessor.prototype.updateProcessDis = function () {
             var tableBody = document.getElementById("processBody");
             tableBody.innerHTML = "";
