@@ -2,7 +2,7 @@ module TSOS{
 
     export class dispatcher{
 
-        public save(): void{
+        public static save(): void{
             _CurrentPCB.PC = _CPU.PC;
             _CurrentPCB.Acc = _CPU.Acc;
             _CurrentPCB.X = _CPU.Xreg;
@@ -10,7 +10,7 @@ module TSOS{
             _CurrentPCB.Z = _CPU.Zflag;
         }
 
-        public reload(): void{
+        public static reload(): void{
             _CPU.PC = _CurrentPCB.PC;
             _CPU.Acc = _CurrentPCB.Acc;
             _CPU.Xreg = _CurrentPCB.X;

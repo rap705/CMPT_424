@@ -85,6 +85,7 @@ var TSOS;
                         this.increment();
                         break;
                     case "FF":
+                        this.PC++;
                         var interrupt = new TSOS.Interrupt(SYSTEM_CALL, [0]);
                         _KernelInterruptQueue.enqueue(interrupt);
                         break;

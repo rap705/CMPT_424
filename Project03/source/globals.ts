@@ -20,6 +20,7 @@ const TIMER_IRQ: number = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (inte
                               // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 const KEYBOARD_IRQ: number = 1;
 const SYSTEM_CALL: number = 3;
+const SOFTWARE_IRQ: number = 2;
 
 
 //
@@ -29,8 +30,7 @@ const SYSTEM_CALL: number = 3;
 var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 var _Memory: TSOS.Memory;
 var _MemoryAccessor: TSOS.MemoryAccessor;
-var _Scheduler: TSOS.scheduler;
-var _Dispatcher: TSOS.dispatcher;
+
 
 
 var _OSclock: number = 0;  // Page 23.
@@ -64,6 +64,7 @@ var _SingleStep = false;
 var _CurrentStoredPCB = [];
 var _ScheduleCounter = 0;
 var _Quantum = 6;
+var _Running = 0;
 
 // Standard input and output
 var _StdIn:  TSOS.Console = null; 

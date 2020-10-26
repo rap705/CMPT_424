@@ -84,12 +84,16 @@ module TSOS {
                 var interrupt = _KernelInterruptQueue.dequeue();
                 this.krnInterruptHandler(interrupt.irq, interrupt.params);
             } else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
-                _CPU.cycle();
-                if(_ScheduleCounter >= _Quantum){
-                    _Scheduler.roundRobin();
-                }
-                else{
-                    _ScheduleCounter ++;
+                //_CPU.cycle();
+                if(_Running >= 1){
+                    if(_ScheduleCounter >= _Quantum){
+                        scheduler.roundRobin();
+                        _ScheduleCounter = 0;
+                    }
+                    else{
+                        _ScheduleCounter ++;
+                        _CPU.cycle();
+                    }
                 }
             } else {                       // If there are no interrupts and there is nothing being executed then just be idle.
                 this.krnTrace("Idle");
@@ -129,11 +133,16 @@ module TSOS {
                     _krnKeyboardDriver.isr(params);   // Kernel mode device driver
                     _StdIn.handleInput();
                     break;
+                case SOFTWARE_IRQ:
+                    if(_Mode == 0){
+                        this.pcbSwitch();
+                    }
                 case SYSTEM_CALL:
                     if(_Mode == 0){
                         this.systemCall();
                     }
                     break;
+
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
@@ -210,7 +219,44 @@ module TSOS {
                 _StdOut.advanceLine();
                 _StdOut.putText(_OsShell.promptStr);
             }
-            _CPU.PC ++;
+            //_CPU.PC ++;
+        }
+        
+        public pcbSwitch() {
+            if(_CurrentStoredPCB.length === 2){
+                if(_CurrentPCB.PID === _CurrentStoredPCB[0].PID){
+                    dispatcher.save();
+                    _CurrentStoredPCB[0] = _CurrentPCB;
+                    _CurrentPCB = _CurrentStoredPCB[1];
+                    dispatcher.reload();
+                }
+                else{
+                    dispatcher.save();
+                    _CurrentStoredPCB[1] = _CurrentPCB;
+                    _CurrentPCB = _CurrentStoredPCB[0];
+                    dispatcher.reload();
+                }
+            }
+            else if(_CurrentStoredPCB.length === 3){
+                if(_CurrentPCB.PID === _CurrentStoredPCB[0].PID){
+                    dispatcher.save();
+                    _CurrentStoredPCB[0] = _CurrentPCB;
+                    _CurrentPCB = _CurrentStoredPCB[1];
+                    dispatcher.reload();
+                }
+                else if(_CurrentPCB.PID === _CurrentStoredPCB[1].PID){
+                    dispatcher.save();
+                    _CurrentStoredPCB[1] = _CurrentPCB;
+                    _CurrentPCB = _CurrentStoredPCB[2];
+                    dispatcher.reload();
+                }
+                else{
+                    dispatcher.save();
+                    _CurrentStoredPCB[2] = _CurrentPCB;
+                    _CurrentPCB = _CurrentStoredPCB[0];
+                    dispatcher.reload();
+                }
+            }
         }
     }
 }

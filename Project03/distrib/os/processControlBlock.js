@@ -8,11 +8,11 @@ var TSOS;
             this.memSegment;
             this.PC = 0;
             this.IR;
-            this.Acc;
-            this.X;
-            this.Y;
-            this.Z;
-            this.state = "Ready";
+            this.Acc = 0;
+            this.X = 0;
+            this.Y = 0;
+            this.Z = 0;
+            this.state = "Resident";
         }
         return ProcessControlBlock;
     }());

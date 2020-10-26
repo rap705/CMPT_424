@@ -444,6 +444,7 @@ module TSOS {
                     _CPU.init();
                     _CPU.isExecuting = true;
                     _CurrentPCB = _PCBCon[pid];
+                    _Running++;
                }
                else{
                    _StdOut.putText("Not a valid PID");
@@ -459,7 +460,12 @@ module TSOS {
 
         //Runs all current processes in memory
         public shellRunAll(args: string){
-            
+            if(_CurrentStoredPCB.length >= 1){
+                _CPU.init();
+                _CPU.isExecuting = true;
+                _CurrentPCB = _CurrentStoredPCB[0];
+                _Running = _CurrentStoredPCB.length;
+            }
         }
 
         //Displays the PID and state of all processes

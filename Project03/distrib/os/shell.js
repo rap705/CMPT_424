@@ -383,6 +383,7 @@ var TSOS;
                     _CPU.init();
                     _CPU.isExecuting = true;
                     _CurrentPCB = _PCBCon[pid];
+                    _Running++;
                 }
                 else {
                     _StdOut.putText("Not a valid PID");
@@ -394,6 +395,12 @@ var TSOS;
         };
         //Runs all current processes in memory
         Shell.prototype.shellRunAll = function (args) {
+            if (_CurrentStoredPCB.length >= 1) {
+                _CPU.init();
+                _CPU.isExecuting = true;
+                _CurrentPCB = _CurrentStoredPCB[0];
+                _Running = _CurrentStoredPCB.length;
+            }
         };
         //Displays the PID and state of all processes
         Shell.prototype.shellPS = function (args) {
