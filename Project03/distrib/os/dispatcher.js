@@ -12,6 +12,7 @@ var TSOS;
         };
         dispatcher.reload = function () {
             _CPU.PC = _CurrentPCB.PC;
+            _CPU.opCode = "";
             _CPU.Acc = _CurrentPCB.Acc;
             _CPU.Xreg = _CurrentPCB.X;
             _CPU.Yreg = _CurrentPCB.Y;

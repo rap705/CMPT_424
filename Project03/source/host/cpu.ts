@@ -20,7 +20,8 @@ module TSOS {
                     public Xreg: number = 0,
                     public Yreg: number = 0,
                     public Zflag: number = 0,
-                    public isExecuting: boolean = false) {
+                    public isExecuting: boolean = false,
+                    public opCode) {
 
         }
 
@@ -31,6 +32,7 @@ module TSOS {
             this.Yreg = 0;
             this.Zflag = 0;
             this.isExecuting = false;
+            this.opCode;
         }
 
         public cycle(): void {
@@ -42,9 +44,10 @@ module TSOS {
 
         public execute(check){
             if(check){
-                let opCode = _MemoryAccessor.read(this.PC);
+                //let 
+                this.opCode = _MemoryAccessor.read(this.PC);
                 _CurrentPCB.state = "Running";
-                switch(opCode){
+                switch(this.opCode){
                     case "A9":
                         this.loadAcc();
                         break;
@@ -89,7 +92,7 @@ module TSOS {
                         _KernelInterruptQueue.enqueue(interrupt);
                         break;
                 }
-                _MemoryAccessor.updateCPUDis(opCode);
+                _MemoryAccessor.updateCPUDis(this.opCode);
                 _MemoryAccessor.updateProcessDis();
                 if(_SingleStep){
                     this.isExecuting = false;
@@ -167,6 +170,7 @@ module TSOS {
                 _CurrentStoredPCB[2] = _CurrentPCB;
                 _MemoryAccessor.updateProcessDis();
             }
+            _Running --;
             this.isExecuting = false;
         }
 

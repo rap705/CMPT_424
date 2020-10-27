@@ -121,6 +121,7 @@ module TSOS {
                 _Memory.memRange[i] = "00";
             }
             this.writeMemtoScreen();
+            this.updateProcessDis();
         }
         /*
             This code updates the CPU display

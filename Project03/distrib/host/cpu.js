@@ -13,7 +13,7 @@
 var TSOS;
 (function (TSOS) {
     var Cpu = /** @class */ (function () {
-        function Cpu(PC, Acc, Xreg, Yreg, Zflag, isExecuting) {
+        function Cpu(PC, Acc, Xreg, Yreg, Zflag, isExecuting, opCode) {
             if (PC === void 0) { PC = 0; }
             if (Acc === void 0) { Acc = 0; }
             if (Xreg === void 0) { Xreg = 0; }
@@ -26,6 +26,7 @@ var TSOS;
             this.Yreg = Yreg;
             this.Zflag = Zflag;
             this.isExecuting = isExecuting;
+            this.opCode = opCode;
         }
         Cpu.prototype.init = function () {
             this.PC = 0;
@@ -34,6 +35,7 @@ var TSOS;
             this.Yreg = 0;
             this.Zflag = 0;
             this.isExecuting = false;
+            this.opCode;
         };
         Cpu.prototype.cycle = function () {
             _Kernel.krnTrace('CPU cycle');
@@ -43,9 +45,10 @@ var TSOS;
         };
         Cpu.prototype.execute = function (check) {
             if (check) {
-                var opCode = _MemoryAccessor.read(this.PC);
+                //let 
+                this.opCode = _MemoryAccessor.read(this.PC);
                 _CurrentPCB.state = "Running";
-                switch (opCode) {
+                switch (this.opCode) {
                     case "A9":
                         this.loadAcc();
                         break;
@@ -90,7 +93,7 @@ var TSOS;
                         _KernelInterruptQueue.enqueue(interrupt);
                         break;
                 }
-                _MemoryAccessor.updateCPUDis(opCode);
+                _MemoryAccessor.updateCPUDis(this.opCode);
                 _MemoryAccessor.updateProcessDis();
                 if (_SingleStep) {
                     this.isExecuting = false;
@@ -161,6 +164,7 @@ var TSOS;
                 _CurrentStoredPCB[2] = _CurrentPCB;
                 _MemoryAccessor.updateProcessDis();
             }
+            _Running--;
             this.isExecuting = false;
         };
         //Compare a byte in memory to the X-Reg
