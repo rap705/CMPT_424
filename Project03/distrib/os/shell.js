@@ -433,6 +433,7 @@ var TSOS;
         };
         //Kills all currently running Processes
         Shell.prototype.shellKillAll = function (args) {
+            _Running = 0;
         };
         //Sets the Round Robin Quantum 
         Shell.prototype.shellQuantum = function (args) {

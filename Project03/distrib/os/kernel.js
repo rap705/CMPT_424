@@ -85,7 +85,7 @@ var TSOS;
                         _CPU.cycle();
                     }
                 }
-                else {
+                else if (_Running === 1) {
                     _CPU.cycle();
                 }
             }
