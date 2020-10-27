@@ -13,6 +13,8 @@ var TSOS;
             this.Y = 0;
             this.Z = 0;
             this.state = "Resident";
+            this.base = 0;
+            this.limit = 0;
         }
         return ProcessControlBlock;
     }());

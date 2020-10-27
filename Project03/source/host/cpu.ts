@@ -111,7 +111,7 @@ module TSOS {
         //Store the Accumulator in memory
         public storeAccMem(): void{
             let location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
-            _MemoryAccessor.write(location1, this.Acc);
+            _MemoryAccessor.write(location1, (this.Acc).toString(16).toUpperCase().padStart(2, "0"));
             this.PC += 3;
         }
 
@@ -174,7 +174,7 @@ module TSOS {
         public compareByte(): void{
             var location1 = parseInt(_MemoryAccessor.read(this.PC+1), 16);
             var compValue = parseInt(_MemoryAccessor.read(location1), 16);
-            if(this.Xreg == compValue){
+            if(this.Xreg === compValue){
                 this.Zflag = 1;
             }
             else{

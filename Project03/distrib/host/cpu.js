@@ -111,7 +111,7 @@ var TSOS;
         //Store the Accumulator in memory
         Cpu.prototype.storeAccMem = function () {
             var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
-            _MemoryAccessor.write(location1, this.Acc);
+            _MemoryAccessor.write(location1, (this.Acc).toString(16).toUpperCase().padStart(2, "0"));
             this.PC += 3;
         };
         //Add a value to the accumulator value.  If its over 255 roll back to 0
@@ -167,7 +167,7 @@ var TSOS;
         Cpu.prototype.compareByte = function () {
             var location1 = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
             var compValue = parseInt(_MemoryAccessor.read(location1), 16);
-            if (this.Xreg == compValue) {
+            if (this.Xreg === compValue) {
                 this.Zflag = 1;
             }
             else {

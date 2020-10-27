@@ -359,6 +359,19 @@ var TSOS;
                     _currentPID++;
                     //Get the available memory segment and save it in the PCB
                     pcb.memSegment = _MemoryManager.getAvailableMem();
+                    //Based off the memory Segment determine the base and limit
+                    if (pcb.memSegment === 0) {
+                        pcb.base = 0;
+                        pcb.limit = 255;
+                    }
+                    else if (pcb.memSegment === 0) {
+                        pcb.base = 256;
+                        pcb.limit = 511;
+                    }
+                    else {
+                        pcb.base = 512;
+                        pcb.limit = 768;
+                    }
                     //Flip the memory segment to be no longer available
                     _MemoryManager.changeAvailabilityStatus(pcb.memSegment);
                     //Add the PCB to the Current Stored PCB Container

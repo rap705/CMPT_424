@@ -94,6 +94,7 @@ var TSOS;
                     _Memory.memRange[(address + 512)] = data;
                 }
             }
+            this.writeMemtoScreen();
         };
         /*
            Create a table and draw it to the screen
