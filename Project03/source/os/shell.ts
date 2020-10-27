@@ -503,7 +503,7 @@ module TSOS {
 
         //Kills all currently running Processes
         public shellKillAll(args: string){
-            
+            _Running = 0;
         }
 
         //Sets the Round Robin Quantum 
