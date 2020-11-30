@@ -209,15 +209,19 @@ var TSOS;
             if (_CurrentStoredPCB.length === 2) {
                 if (_CurrentPCB.PID === _CurrentStoredPCB[0].PID) {
                     TSOS.dispatcher.save();
-                    _CurrentStoredPCB[0] = _CurrentPCB;
-                    _CurrentPCB = _CurrentStoredPCB[1];
-                    TSOS.dispatcher.reload();
+                    if (_CurrentStoredPCB[1].state != "Terminated") {
+                        _CurrentStoredPCB[0] = _CurrentPCB;
+                        _CurrentPCB = _CurrentStoredPCB[1];
+                        TSOS.dispatcher.reload();
+                    }
                 }
                 else {
                     TSOS.dispatcher.save();
-                    _CurrentStoredPCB[1] = _CurrentPCB;
-                    _CurrentPCB = _CurrentStoredPCB[0];
-                    TSOS.dispatcher.reload();
+                    if (_CurrentStoredPCB[0].state != "Terminated") {
+                        _CurrentStoredPCB[1] = _CurrentPCB;
+                        _CurrentPCB = _CurrentStoredPCB[0];
+                        TSOS.dispatcher.reload();
+                    }
                 }
             }
             else if (_CurrentStoredPCB.length === 3) {

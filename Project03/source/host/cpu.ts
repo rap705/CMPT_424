@@ -159,7 +159,8 @@ module TSOS {
 
         //Break(which is really just a system call)
         public break(): void{
-            _CurrentPCB.state = "Terminated"
+            _CurrentPCB.state = "Terminated";
+            _CurrentPCB.PC = this.PC;
             if(_CurrentPCB.PID === _CurrentStoredPCB[0].PID){
                 _CurrentStoredPCB[0] = _CurrentPCB;
                 _MemoryAccessor.updateProcessDis();
@@ -172,8 +173,12 @@ module TSOS {
                 _CurrentStoredPCB[2] = _CurrentPCB;
                 _MemoryAccessor.updateProcessDis();
             }
+            scheduler.roundRobin();
+           // _Running --;
+            if(_Running > 0){
+                this.isExecuting = false;
+            }
             _Running --;
-            this.isExecuting = false;
         }
 
         //Compare a byte in memory to the X-Reg

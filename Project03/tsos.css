@@ -41,14 +41,25 @@ h3 {
 }
 
 .footerText {
+  position: absolute;
+  top: 830px;
+  margin-bottom: 10px;
   color: black;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 8pt;
+  margin-left: 600px;
   text-align: center;
 }
 
 #divMem{
-  float: right;
+  margin-left: 940px;
+}
+
+#divMemTable{
+  width: 300px;
+  height: 300px;
+  overflow: auto;
+  background-color: white;
 }
 
 #divProccessDisplay{
