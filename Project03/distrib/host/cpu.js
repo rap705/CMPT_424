@@ -159,8 +159,7 @@ var TSOS;
                 _MemoryAccessor.updateProcessDis();
             }
             TSOS.scheduler.roundRobin();
-            // _Running --;
-            if (_Running > 0) {
+            if (_Running < 0) {
                 this.isExecuting = false;
             }
             _Running--;
