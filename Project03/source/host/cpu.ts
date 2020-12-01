@@ -173,11 +173,11 @@ module TSOS {
                 _CurrentStoredPCB[2] = _CurrentPCB;
                 _MemoryAccessor.updateProcessDis();
             }
+            _Running --;
             scheduler.roundRobin();
-            if(_Running < 0){
+            if(_Running === 0){
                 this.isExecuting = false;
             }
-            _Running --;
         }
 
         //Compare a byte in memory to the X-Reg
