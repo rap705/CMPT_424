@@ -211,7 +211,9 @@ var TSOS;
                     TSOS.dispatcher.save();
                     if (_CurrentStoredPCB[1].state != "Terminated") {
                         _CurrentStoredPCB[0] = _CurrentPCB;
+                        _CurrentStoredPCB[0].state = "Ready";
                         _CurrentPCB = _CurrentStoredPCB[1];
+                        _CurrentStoredPCB[1].state = "Running";
                         TSOS.dispatcher.reload();
                     }
                 }
@@ -219,7 +221,9 @@ var TSOS;
                     TSOS.dispatcher.save();
                     if (_CurrentStoredPCB[0].state != "Terminated") {
                         _CurrentStoredPCB[1] = _CurrentPCB;
+                        _CurrentStoredPCB[1].state = "Ready";
                         _CurrentPCB = _CurrentStoredPCB[0];
+                        _CurrentStoredPCB[0].state = "Running";
                         TSOS.dispatcher.reload();
                     }
                 }
@@ -244,6 +248,7 @@ var TSOS;
                     TSOS.dispatcher.reload();
                 }
             }
+            _MemoryAccessor.updateProcessDis();
         };
         return Kernel;
     }());

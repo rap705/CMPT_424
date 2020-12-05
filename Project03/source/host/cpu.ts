@@ -174,9 +174,11 @@ module TSOS {
                 _MemoryAccessor.updateProcessDis();
             }
             _Running --;
-            scheduler.roundRobin();
             if(_Running === 0){
                 this.isExecuting = false;
+            }
+            else{
+                scheduler.roundRobin();
             }
         }
 

@@ -159,9 +159,11 @@ var TSOS;
                 _MemoryAccessor.updateProcessDis();
             }
             _Running--;
-            TSOS.scheduler.roundRobin();
             if (_Running === 0) {
                 this.isExecuting = false;
+            }
+            else {
+                TSOS.scheduler.roundRobin();
             }
         };
         //Compare a byte in memory to the X-Reg
