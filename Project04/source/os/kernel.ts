@@ -37,7 +37,7 @@ module TSOS {
 
             //Load the File System device driver
             this.krnTrace("Loading the File System device driver.");
-            _krnFileSystemDriver = new deviceDriverFileSystem();    //Construct it.
+            _krnFileSystemDriver = new DeviceDriverFileSystem();    //Construct it.
             _krnFileSystemDriver.driverEntry();                     //Call the driverEntry() initalization routine.
             this.krnTrace(_krnFileSystemDriver.status);
 

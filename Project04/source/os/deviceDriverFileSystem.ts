@@ -6,7 +6,7 @@
 
 module TSOS{
 
-    export class deviceDriverFileSystem extends DeviceDriver{
+    export class DeviceDriverFileSystem extends DeviceDriver{
 
         constructor() {  
             super();
