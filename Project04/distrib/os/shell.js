@@ -82,7 +82,10 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "<Int> - Sets the Quantum for Round Robin Scheduling");
             this.commandList[this.commandList.length] = sc;
             //Formats the disk drive
-            sc = new TSOS.ShellCommand(this.shellFormat, "format", "Formats the disk for use");
+            sc = new TSOS.ShellCommand(this.shellFormat, "format", "- Formats the disk for use");
+            this.commandList[this.commandList.length] = sc;
+            //Formats the disk drive
+            sc = new TSOS.ShellCommand(this.shellCreateFile, "create", "<filename> - Creates a file with the given name");
             this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
@@ -449,6 +452,12 @@ var TSOS;
         Shell.prototype.shellFormat = function () {
             if (!_CPU.isExecuting) {
                 _krnFileSystemDriver.formatDrive();
+            }
+        };
+        //Create a file on the disk with the given name
+        Shell.prototype.shellCreateFile = function (args) {
+            if (_krnFileSystemDriver.status !== "formatted") {
+                _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
             }
         };
         //This will eventually give the blue screen of death maybe

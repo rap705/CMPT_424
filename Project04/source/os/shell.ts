@@ -122,7 +122,11 @@ module TSOS {
             this.commandList[this.commandList.length] = sc;
 
             //Formats the disk drive
-            sc = new ShellCommand(this.shellFormat, "format", "Formats the disk for use");
+            sc = new ShellCommand(this.shellFormat, "format", "- Formats the disk for use");
+            this.commandList[this.commandList.length] = sc;
+
+            //Formats the disk drive
+            sc = new ShellCommand(this.shellCreateFile, "create", "<filename> - Creates a file with the given name");
             this.commandList[this.commandList.length] = sc;
 
 
@@ -524,6 +528,14 @@ module TSOS {
                 _krnFileSystemDriver.formatDrive();
             }
         }
+
+        //Create a file on the disk with the given name
+        public shellCreateFile(args: string){
+            if(_krnFileSystemDriver.status !== "formatted"){
+                _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
+            }
+        }
+
         //This will eventually give the blue screen of death maybe
         public bsod(): void{
             

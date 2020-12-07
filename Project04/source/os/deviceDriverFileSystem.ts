@@ -32,8 +32,13 @@ module TSOS{
                 }
             }
             this.setStorage("000000", "01".padEnd(128, "0"));
-            _StdOut.putText("The Disk is now formatted.");
+            _StdOut.putText("The disk was successfully formatted.");
             this.status = "formatted";
+        }
+
+        //This will create a file on the disk with the specified name
+        public createFile(){
+
         }
 
         //This will return a key based on the track sector and block
@@ -45,6 +50,7 @@ module TSOS{
             return key;
         }
 
+        //This will set the item in session Storage given a key and data value
         public setStorage(key, data){
             sessionStorage.setItem(key, data);
         }

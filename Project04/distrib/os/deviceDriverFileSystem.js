@@ -45,6 +45,9 @@ var TSOS;
             _StdOut.putText("The Disk is now formatted.");
             this.status = "formatted";
         };
+        //This will create a file on the disk with the specified name
+        DeviceDriverFileSystem.prototype.createFile = function () {
+        };
         //This will return a key based on the track sector and block
         DeviceDriverFileSystem.prototype.getKey = function (track, sector, block) {
             var t = track.toString(16).toUpperCase().padStart(2, "0");
@@ -53,6 +56,7 @@ var TSOS;
             var key = t + s + b;
             return key;
         };
+        //This will set the item in session Storage given a key and data value
         DeviceDriverFileSystem.prototype.setStorage = function (key, data) {
             sessionStorage.setItem(key, data);
         };
