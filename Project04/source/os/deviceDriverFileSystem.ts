@@ -37,7 +37,16 @@ module TSOS{
         }
 
         //This will create a file on the disk with the specified name
-        public createFile(){
+        public createFile(name){
+            let dirKey = this.findDirKey();
+            if(dirKey !== null){
+                let hexName = this.asciiToHex(name);
+                this.setStorage(dirKey, ("01" + dirKey + hexName).padEnd(128, "0"));
+                _StdOut.putText("Created file: " + name);
+            }
+            else{
+                _StdOut.putText("There are no available directory blocks.");
+            }
 
         }
 
@@ -53,6 +62,41 @@ module TSOS{
         //This will set the item in session Storage given a key and data value
         public setStorage(key, data){
             sessionStorage.setItem(key, data);
+        }
+
+        //Find the dir key
+        public findDirKey(){
+            for(let i = 0; i < 8; i++){
+                for(let k = 0; k < 8; k++){
+                    if(i !== 0 && k !== 0){
+                        let key = this.getKey(0, i, k);
+                        let block = sessionStorage.getItem(key);
+                        if(this.blockFree(block)){
+                            return key;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        //Create checks to see if the block is free or in use
+        public blockFree(block){
+            let check = block.substring(0 , 2);
+            if(check === "01"){
+                return false;
+            }
+            return true;
+        }
+
+        //Returns the hex of the given ascii
+        public asciiToHex(str){
+            let finalHex = "";
+            for(let i = 0; i < str.length; i++){
+                let convert = Number(str.charCodeAt(0).toString(16));
+                finalHex += convert;
+            }
+            return finalHex;
         }
     }
 }

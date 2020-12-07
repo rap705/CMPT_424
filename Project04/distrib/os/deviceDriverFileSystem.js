@@ -42,11 +42,20 @@ var TSOS;
                 }
             }
             this.setStorage("000000", "01".padEnd(128, "0"));
-            _StdOut.putText("The Disk is now formatted.");
+            _StdOut.putText("The disk was successfully formatted.");
             this.status = "formatted";
         };
         //This will create a file on the disk with the specified name
-        DeviceDriverFileSystem.prototype.createFile = function () {
+        DeviceDriverFileSystem.prototype.createFile = function (name) {
+            var dirKey = this.findDirKey();
+            if (dirKey !== null) {
+                var hexName = this.asciiToHex(name);
+                this.setStorage(dirKey, ("01" + dirKey + hexName).padEnd(128, "0"));
+                _StdOut.putText("Created file: " + name);
+            }
+            else {
+                _StdOut.putText("There are no available directory blocks.");
+            }
         };
         //This will return a key based on the track sector and block
         DeviceDriverFileSystem.prototype.getKey = function (track, sector, block) {
@@ -59,6 +68,38 @@ var TSOS;
         //This will set the item in session Storage given a key and data value
         DeviceDriverFileSystem.prototype.setStorage = function (key, data) {
             sessionStorage.setItem(key, data);
+        };
+        //Find the dir key
+        DeviceDriverFileSystem.prototype.findDirKey = function () {
+            for (var i = 0; i < 8; i++) {
+                for (var k = 0; k < 8; k++) {
+                    if (i !== 0 && k !== 0) {
+                        var key = this.getKey(0, i, k);
+                        var block = sessionStorage.getItem(key);
+                        if (this.blockFree(block)) {
+                            return key;
+                        }
+                    }
+                }
+            }
+            return null;
+        };
+        //Create checks to see if the block is free or in use
+        DeviceDriverFileSystem.prototype.blockFree = function (block) {
+            var check = block.substring(0, 2);
+            if (check === "01") {
+                return false;
+            }
+            return true;
+        };
+        //Returns the hex of the given ascii
+        DeviceDriverFileSystem.prototype.asciiToHex = function (str) {
+            var finalHex = "";
+            for (var i = 0; i < str.length; i++) {
+                var convert = Number(str.charAt(i).charCodeAt(0));
+                finalHex += convert;
+            }
+            return finalHex;
         };
         return DeviceDriverFileSystem;
     }(TSOS.DeviceDriver));

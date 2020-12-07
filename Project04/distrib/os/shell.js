@@ -459,6 +459,14 @@ var TSOS;
             if (_krnFileSystemDriver.status !== "formatted") {
                 _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
             }
+            else {
+                if (args.length > 0) {
+                    _krnFileSystemDriver.createFile(args);
+                }
+                else {
+                    _StdOut.putText("No file name provided. Please supply a file name.");
+                }
+            }
         };
         //This will eventually give the blue screen of death maybe
         Shell.prototype.bsod = function () {
