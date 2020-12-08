@@ -57,6 +57,14 @@ var TSOS;
                 _StdOut.putText("There are no available directory blocks.");
             }
         };
+        //This will write data to a file on the disk
+        DeviceDriverFileSystem.prototype.writeFile = function (filename, data) {
+            if (data[0] === "\"" && data[data.length - 1] === "\"") {
+            }
+            else {
+                _StdOut.putText("Error: Data must be in quotes.");
+            }
+        };
         //This will return a key based on the track sector and block
         DeviceDriverFileSystem.prototype.getKey = function (track, sector, block) {
             var t = track.toString(16).toUpperCase().padStart(2, "0");

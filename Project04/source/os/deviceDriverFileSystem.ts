@@ -51,8 +51,13 @@ module TSOS{
         }
 
         //This will write data to a file on the disk
-        public writeFile(){
-            
+        public writeFile(filename, data){
+            if(data[0] === "\"" && data[data.length - 1] === "\""){
+
+            }
+            else{
+                _StdOut.putText("Error: Data must be in quotes.")
+            }
         }
 
         //This will return a key based on the track sector and block

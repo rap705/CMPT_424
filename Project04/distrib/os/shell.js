@@ -84,8 +84,11 @@ var TSOS;
             //Formats the disk drive
             sc = new TSOS.ShellCommand(this.shellFormat, "format", "- Formats the disk for use");
             this.commandList[this.commandList.length] = sc;
-            //Formats the disk drive
+            //Creates a file on the disk drive
             sc = new TSOS.ShellCommand(this.shellCreateFile, "create", "<filename> - Creates a file with the given name");
+            this.commandList[this.commandList.length] = sc;
+            //Writes to a file on the disk drive
+            sc = new TSOS.ShellCommand(this.shellWriteFile, "write", "<filename> <data> - Writes data to the specified file");
             this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
@@ -465,6 +468,24 @@ var TSOS;
                 }
                 else {
                     _StdOut.putText("No file name provided. Please supply a file name.");
+                }
+            }
+        };
+        Shell.prototype.shellWriteFile = function (args) {
+            if (_krnFileSystemDriver.status !== "formatted") {
+                _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
+            }
+            else {
+                if (args.length > 1) {
+                    var data = "";
+                    for (var i = 1; i < args.length; i++) {
+                        data += args[i] + " ";
+                    }
+                    data = data.substring(0, data.length - 1);
+                    _krnFileSystemDriver.writeFile(args[0], data);
+                }
+                else {
+                    _StdOut.putText("Filename and data in quotes must be provided.");
                 }
             }
         };

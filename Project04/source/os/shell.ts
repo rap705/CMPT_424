@@ -549,7 +549,22 @@ module TSOS {
         }
 
         public shellWriteFile(args: string){
-
+            if(_krnFileSystemDriver.status !== "formatted"){
+                _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
+            }
+            else{
+                if(args.length > 1){
+                    let data = "";
+                    for(let i = 1; i < args.length; i++){
+                        data += args[i] + " ";
+                    }
+                    data = data.substring(0 , data.length-1);
+                    _krnFileSystemDriver.writeFile(args[0], data);
+                }
+                else{
+                    _StdOut.putText("Filename and data in quotes must be provided.")
+                }
+            }
         }
 
         //This will eventually give the blue screen of death maybe
