@@ -125,8 +125,12 @@ module TSOS {
             sc = new ShellCommand(this.shellFormat, "format", "- Formats the disk for use");
             this.commandList[this.commandList.length] = sc;
 
-            //Formats the disk drive
+            //Creates a file on the disk drive
             sc = new ShellCommand(this.shellCreateFile, "create", "<filename> - Creates a file with the given name");
+            this.commandList[this.commandList.length] = sc;
+
+            //Writes to a file on the disk drive
+            sc = new ShellCommand(this.shellWriteFile, "write", "<filename> <data> - Writes data to the specified file");
             this.commandList[this.commandList.length] = sc;
 
 
@@ -542,6 +546,10 @@ module TSOS {
                     _StdOut.putText("No file name provided. Please supply a file name.")
                 }
             }
+        }
+
+        public shellWriteFile(args: string){
+
         }
 
         //This will eventually give the blue screen of death maybe

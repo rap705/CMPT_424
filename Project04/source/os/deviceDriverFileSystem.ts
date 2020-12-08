@@ -50,6 +50,11 @@ module TSOS{
 
         }
 
+        //This will write data to a file on the disk
+        public writeFile(){
+            
+        }
+
         //This will return a key based on the track sector and block
         public getKey(track, sector, block){
             let t = track.toString(16).toUpperCase().padStart(2, "0");
