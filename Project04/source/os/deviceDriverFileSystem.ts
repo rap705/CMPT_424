@@ -52,8 +52,14 @@ module TSOS{
 
         //This will write data to a file on the disk
         public writeFile(filename, data){
+            //Checks to see if the data was placed in quotes so we know what should be in the file
+            let hexData = ""
             if(data[0] === "\"" && data[data.length - 1] === "\""){
-
+                data = data.substring(1, data.length-1);
+                for(let i = 0; i < data.length; i++){
+                    hexData += this.asciiToHex(data[i]);
+                }
+                _StdOut.putText(hexData);
             }
             else{
                 _StdOut.putText("Error: Data must be in quotes.")
