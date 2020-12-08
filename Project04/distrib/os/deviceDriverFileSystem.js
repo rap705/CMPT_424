@@ -100,6 +100,24 @@ var TSOS;
                 _StdOut.putText("Error: Data must be in quotes.");
             }
         };
+        //Read the specified file
+        DeviceDriverFileSystem.prototype.readFile = function (filename) {
+            var fileDirectoryKey = this.searchFileName(filename);
+            if (fileDirectoryKey !== null) {
+                var fileDirectoryBlock = sessionStorage.getItem(fileDirectoryKey);
+                var dataPointer = this.getBlockPointer(fileDirectoryBlock);
+                if (fileDirectoryKey === dataPointer) {
+                    _StdOut.putText("The file has not been written to yet.");
+                    return;
+                }
+                var data = this.readFileData(dataPointer);
+                _StdOut.putText(data);
+            }
+            else {
+                _StdOut.putText("The file does not exist.");
+                return;
+            }
+        };
         //This will return a key based on the track sector and block
         DeviceDriverFileSystem.prototype.getKey = function (track, sector, block) {
             var t = track.toString(16).toUpperCase().padStart(2, "0");
@@ -213,6 +231,18 @@ var TSOS;
                 }
             }
             return null;
+        };
+        //Read data from a file and return the ascii value
+        DeviceDriverFileSystem.prototype.readFileData = function (blockPointer) {
+            var data = "";
+            var block = sessionStorage.getItem(blockPointer);
+            while (blockPointer !== this.getBlockPointer(block)) {
+                data += this.getBlockData(block);
+                blockPointer = this.getBlockPointer(block);
+                block = sessionStorage.getItem(blockPointer);
+            }
+            data += this.getBlockData(block);
+            return data;
         };
         return DeviceDriverFileSystem;
     }(TSOS.DeviceDriver));

@@ -96,8 +96,22 @@ module TSOS{
         }
 
         //Read the specified file
-        public readFile(){
-            
+        public readFile(filename){
+            let fileDirectoryKey = this.searchFileName(filename);
+            if(fileDirectoryKey !== null){
+                let fileDirectoryBlock = sessionStorage.getItem(fileDirectoryKey);
+                let dataPointer = this.getBlockPointer(fileDirectoryBlock);
+                if(fileDirectoryKey === dataPointer){
+                    _StdOut.putText("The file has not been written to yet.")
+                    return;
+                }
+                let data = this.readFileData(dataPointer);
+                _StdOut.putText(data);
+            }
+            else{
+                _StdOut.putText("The file does not exist.")
+                return;
+            }
         }
 
         //This will return a key based on the track sector and block
@@ -223,6 +237,19 @@ module TSOS{
                 }
             }
             return null;
+        }
+
+        //Read data from a file and return the ascii value
+        public readFileData(blockPointer){
+            let data = "";
+            let block = sessionStorage.getItem(blockPointer);
+            while(blockPointer !== this.getBlockPointer(block)){
+                data += this.getBlockData(block);
+                blockPointer = this.getBlockPointer(block);
+                block = sessionStorage.getItem(blockPointer);
+            }
+            data += this.getBlockData(block);
+            return data;
         }
 
     }

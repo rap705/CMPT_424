@@ -133,6 +133,9 @@ module TSOS {
             sc = new ShellCommand(this.shellWriteFile, "write", "<filename> <data> - Writes data to the specified file");
             this.commandList[this.commandList.length] = sc;
 
+            //Reads a file written on the disk
+            sc = new ShellCommand(this.shellReadFile, "read", "<filename> - Read the specified file");
+            this.commandList[this.commandList.length] = sc;
 
             // Display the initial prompt.
             this.putPrompt();
@@ -570,6 +573,11 @@ module TSOS {
         public shellReadFile(args: string){
             if(_krnFileSystemDriver.status !== "formatted"){
                 _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
+            }
+            else{
+                if(args.length > 0){
+                    _krnFileSystemDriver.readFile(args[0]);
+                }
             }
         }
 
