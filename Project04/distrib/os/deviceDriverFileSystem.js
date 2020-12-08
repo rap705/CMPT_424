@@ -73,7 +73,7 @@ var TSOS;
         DeviceDriverFileSystem.prototype.findDirKey = function () {
             for (var i = 0; i < 8; i++) {
                 for (var k = 0; k < 8; k++) {
-                    if (i !== 0 && k !== 0) {
+                    if (i !== 0 || k !== 0) {
                         var key = this.getKey(0, i, k);
                         var block = sessionStorage.getItem(key);
                         if (this.blockFree(block)) {
@@ -95,8 +95,9 @@ var TSOS;
         //Returns the hex of the given ascii
         DeviceDriverFileSystem.prototype.asciiToHex = function (str) {
             var finalHex = "";
-            for (var i = 0; i < str.length; i++) {
-                var convert = Number(str.charAt(i).charCodeAt(0));
+            for (var i = 0; i < str[0].length; i++) {
+                var convert = str[0].charCodeAt(i).toString(16);
+                convert = convert.toUpperCase();
                 finalHex += convert;
             }
             return finalHex;

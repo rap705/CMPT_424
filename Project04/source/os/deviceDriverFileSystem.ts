@@ -68,7 +68,7 @@ module TSOS{
         public findDirKey(){
             for(let i = 0; i < 8; i++){
                 for(let k = 0; k < 8; k++){
-                    if(i !== 0 && k !== 0){
+                    if(i !== 0 || k !== 0){
                         let key = this.getKey(0, i, k);
                         let block = sessionStorage.getItem(key);
                         if(this.blockFree(block)){
@@ -92,8 +92,9 @@ module TSOS{
         //Returns the hex of the given ascii
         public asciiToHex(str){
             let finalHex = "";
-            for(let i = 0; i < str.length; i++){
-                let convert = Number(str.charCodeAt(0).toString(16));
+            for(let i = 0; i < str[0].length; i++){
+                let convert = str[0].charCodeAt(i).toString(16);
+                convert = convert.toUpperCase();
                 finalHex += convert;
             }
             return finalHex;
