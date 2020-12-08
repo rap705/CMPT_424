@@ -63,10 +63,38 @@ var TSOS;
             var hexData = "";
             if (data[0] === "\"" && data[data.length - 1] === "\"") {
                 data = data.substring(1, data.length - 1);
+                //This needs to be done because data is an array and the function only accounts for the first item in the array its given
                 for (var i = 0; i < data.length; i++) {
                     hexData += this.asciiToHex(data[i]);
                 }
-                _StdOut.putText(hexData);
+                var fileKey = this.searchFileName(filename);
+                if (fileKey !== null) {
+                    var fileDirectoryBlock = sessionStorage.getItem(fileKey);
+                    if (this.getBlockPointer(fileDirectoryBlock) !== fileKey) {
+                        this.deallocateBlock(this.getBlockPointer(fileDirectoryBlock));
+                    }
+                    var dataKeys = [];
+                    for (var i = 0; i < hexData.length / 120; i++) {
+                        var openDataKey = this.findDataBlock();
+                        if (openDataKey === null) {
+                            _StdOut.putText("Not enough data blocks to store text.");
+                            return;
+                        }
+                        dataKeys.push(openDataKey);
+                        this.setStorage(openDataKey, ("01" + openDataKey).padEnd(128, "0"));
+                    }
+                    //Begin writing the data to data blocks
+                    this.setStorage(fileKey, ("01" + dataKeys[0] + sessionStorage.getItem(fileKey).substring(8)));
+                    for (var i = 0; i < dataKeys.length; i++) {
+                        if (i !== dataKeys.length - 1) {
+                            this.setStorage(dataKeys[i], ("01" + dataKeys[i + 1] + hexData.substring(i * 60 * 2, (i + 1) * 60 * 2)).padEnd(128, "0"));
+                        }
+                        else {
+                            this.setStorage(dataKeys[i], ("01" + dataKeys[i] + hexData.substring(i * 60 * 2)).padEnd(128, "0"));
+                        }
+                    }
+                    _StdOut.putText("Data successfully written to file: " + filename);
+                }
             }
             else {
                 _StdOut.putText("Error: Data must be in quotes.");
@@ -116,6 +144,75 @@ var TSOS;
                 finalHex += convert;
             }
             return finalHex;
+        };
+        //Searches for the given filename
+        DeviceDriverFileSystem.prototype.searchFileName = function (name) {
+            for (var i = 0; i < 8; i++) {
+                for (var k = 0; k < 8; k++) {
+                    if (i !== 0 || k !== 0) {
+                        var key = this.getKey(0, i, k);
+                        var block = sessionStorage.getItem(key);
+                        if (!this.blockFree(block)) {
+                            var blockFileName = this.getBlockData(block);
+                            if (blockFileName === name) {
+                                return key;
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        };
+        //Gets all of the data from the specified block
+        DeviceDriverFileSystem.prototype.getBlockData = function (block) {
+            var data = "";
+            for (var i = 4; i < 64; i++) {
+                var byte = block.substring(i * 2, i * 2 + 2);
+                if (byte !== "00") {
+                    data += String.fromCharCode(parseInt(byte, 16));
+                }
+                else {
+                    return data;
+                }
+            }
+        };
+        //Gets the block pointer 
+        DeviceDriverFileSystem.prototype.getBlockPointer = function (block) {
+            var result = block.substring(2, 8);
+            return result;
+        };
+        //This will deallocate the block so that it can be reused
+        DeviceDriverFileSystem.prototype.deallocateBlock = function (blockPointer) {
+            var block = sessionStorage.getItem(blockPointer);
+            while (blockPointer !== this.getBlockPointer(block)) {
+                var oldPoint = blockPointer;
+                blockPointer = this.getBlockPointer(block);
+                this.setStorage(oldPoint, "00" + oldPoint + this.getBlockDataRaw(block));
+            }
+        };
+        //This will return the block data without converting it from hex
+        DeviceDriverFileSystem.prototype.getBlockDataRaw = function (block) {
+            var result = "";
+            for (var i = 4; i < 64; i++) {
+                var byte = block.substring(i * 2, i * 2 + 2);
+                result += byte;
+            }
+            return result;
+        };
+        //Finds the next open data block
+        DeviceDriverFileSystem.prototype.findDataBlock = function () {
+            for (var i = 1; i < 4; i++) {
+                for (var k = 0; k < 8; k++) {
+                    for (var j = 0; j < 8; j++) {
+                        var key = this.getKey(i, k, j);
+                        var block = sessionStorage.getItem(key);
+                        if (this.blockFree(block)) {
+                            return key;
+                        }
+                    }
+                }
+            }
+            return null;
         };
         return DeviceDriverFileSystem;
     }(TSOS.DeviceDriver));
