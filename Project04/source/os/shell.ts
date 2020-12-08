@@ -567,6 +567,12 @@ module TSOS {
             }
         }
 
+        public shellReadFile(args: string){
+            if(_krnFileSystemDriver.status !== "formatted"){
+                _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
+            }
+        }
+
         //This will eventually give the blue screen of death maybe
         public bsod(): void{
             

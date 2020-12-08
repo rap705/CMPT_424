@@ -95,6 +95,11 @@ module TSOS{
             }
         }
 
+        //Read the specified file
+        public readFile(){
+            
+        }
+
         //This will return a key based on the track sector and block
         public getKey(track, sector, block){
             let t = track.toString(16).toUpperCase().padStart(2, "0");
