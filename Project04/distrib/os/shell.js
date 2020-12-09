@@ -96,8 +96,14 @@ var TSOS;
             //Deletes the specified file
             sc = new TSOS.ShellCommand(this.shellDeleteFile, "delete", "<filename> - Delete the specified file");
             this.commandList[this.commandList.length] = sc;
-            //Deletes the specified file
-            sc = new TSOS.ShellCommand(this.shellListFiles, "ls", "List all files on the disk");
+            //Lists all files on the disk
+            sc = new TSOS.ShellCommand(this.shellListFiles, "ls", "- List all files on the disk");
+            this.commandList[this.commandList.length] = sc;
+            //Gets the current schedule type
+            sc = new TSOS.ShellCommand(this.shellGetSchedule, "getschedule", "- Gets the current schedule");
+            this.commandList[this.commandList.length] = sc;
+            //Sets the current schedule type
+            sc = new TSOS.ShellCommand(this.shellSetSchedule, "setschedule", "<rr, fcfs, priority> - Gets the current schedule");
             this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
@@ -527,6 +533,36 @@ var TSOS;
             }
             else {
                 _krnFileSystemDriver.listAllFiles();
+            }
+        };
+        //This will Get the current set schedule
+        Shell.prototype.shellGetSchedule = function () {
+            if (_ScheduleType === "rr") {
+                _StdOut.putText("Current schedule type set to Round Robin.");
+            }
+            else if (_ScheduleType === "fcfs") {
+                _StdOut.putText("Current schedule type set to First-Come,First-Served.");
+            }
+            else {
+                _StdOut.putText("Current schedule type set to Non-preemptive priority.");
+            }
+        };
+        //This will set the schedule
+        Shell.prototype.shellSetSchedule = function (args) {
+            if (args[0] === "rr") {
+                _ScheduleType = "rr";
+                _StdOut.putText("Schedule set to: Round Robin.");
+            }
+            else if (args[0] === "fcfs") {
+                _ScheduleType = "fcfs";
+                _StdOut.putText("Schedule set to: First-Come,First-Served.");
+            }
+            else if (args[0] === "priority") {
+                _ScheduleType = "priority";
+                _StdOut.putText("Schedule set to: Non-premptive priority.");
+            }
+            else {
+                _StdOut.putText("Not a valid schedule type.");
             }
         };
         //This will eventually give the blue screen of death maybe

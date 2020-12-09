@@ -50,6 +50,7 @@ var _CurrentStoredPCB = [];
 var _ScheduleCounter = 0;
 var _Quantum = 6;
 var _Running = 0;
+var _ScheduleType = "rr";
 // Standard input and output
 var _StdIn = null;
 var _StdOut = null;
