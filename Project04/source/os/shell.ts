@@ -136,6 +136,11 @@ module TSOS {
             //Reads a file written on the disk
             sc = new ShellCommand(this.shellReadFile, "read", "<filename> - Read the specified file");
             this.commandList[this.commandList.length] = sc;
+            
+            //Deletes the specified file
+            sc = new ShellCommand(this.shellDeleteFile, "delete", "<filename> - Delete the specified file");
+            this.commandList[this.commandList.length] = sc;
+
 
             // Display the initial prompt.
             this.putPrompt();
@@ -570,6 +575,7 @@ module TSOS {
             }
         }
 
+        //This will print the data in the file to the console
         public shellReadFile(args: string){
             if(_krnFileSystemDriver.status !== "formatted"){
                 _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
@@ -580,6 +586,19 @@ module TSOS {
                 }
             }
         }
+
+        //This will delete the specified file
+        public shellDeleteFile(args: string){
+            if(_krnFileSystemDriver.status !== "formatted"){
+                _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
+            }
+            else{
+                if(args.length > 0){
+                    _krnFileSystemDriver.deleteFile(args[0]);
+                }
+            }
+        }
+
 
         //This will eventually give the blue screen of death maybe
         public bsod(): void{

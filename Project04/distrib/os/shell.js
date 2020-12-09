@@ -93,6 +93,9 @@ var TSOS;
             //Reads a file written on the disk
             sc = new TSOS.ShellCommand(this.shellReadFile, "read", "<filename> - Read the specified file");
             this.commandList[this.commandList.length] = sc;
+            //Deletes the specified file
+            sc = new TSOS.ShellCommand(this.shellDeleteFile, "delete", "<filename> - Delete the specified file");
+            this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
         };
@@ -492,6 +495,7 @@ var TSOS;
                 }
             }
         };
+        //This will print the data in the file to the console
         Shell.prototype.shellReadFile = function (args) {
             if (_krnFileSystemDriver.status !== "formatted") {
                 _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
@@ -499,6 +503,17 @@ var TSOS;
             else {
                 if (args.length > 0) {
                     _krnFileSystemDriver.readFile(args[0]);
+                }
+            }
+        };
+        //This will delete the specified file
+        Shell.prototype.shellDeleteFile = function (args) {
+            if (_krnFileSystemDriver.status !== "formatted") {
+                _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
+            }
+            else {
+                if (args.length > 0) {
+                    _krnFileSystemDriver.deleteFile(args[0]);
                 }
             }
         };

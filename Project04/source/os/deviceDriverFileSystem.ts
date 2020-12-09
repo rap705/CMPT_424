@@ -114,6 +114,23 @@ module TSOS{
             }
         }
 
+        //Delete the specified file
+        public deleteFile(filename){
+            let dirKey = this.searchFileName(filename);
+            if(dirKey !== null){
+                let dirBlock = sessionStorage.getItem(dirKey);
+                let dataPointer = this.getBlockPointer(dirBlock);
+                if(dataPointer !== dirBlock){
+                    this.deallocateBlock(dataPointer);
+                }
+                this.setStorage(dirKey , ("00" + dirKey + this.getBlockDataRaw(dirBlock)));
+                _StdOut.putText("File: " + filename + " was successfully deleted.");
+            }
+            else{
+                _StdOut.putText("The file does not exist.")
+            }
+        }
+
         //This will return a key based on the track sector and block
         public getKey(track, sector, block){
             let t = track.toString(16).toUpperCase().padStart(2, "0");

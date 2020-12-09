@@ -118,6 +118,22 @@ var TSOS;
                 return;
             }
         };
+        //Delete the specified file
+        DeviceDriverFileSystem.prototype.deleteFile = function (filename) {
+            var dirKey = this.searchFileName(filename);
+            if (dirKey !== null) {
+                var dirBlock = sessionStorage.getItem(dirKey);
+                var dataPointer = this.getBlockPointer(dirBlock);
+                if (dataPointer !== dirBlock) {
+                    this.deallocateBlock(dataPointer);
+                }
+                this.setStorage(dirKey, ("00" + dirKey + this.getBlockDataRaw(dirBlock)));
+                _StdOut.putText("File: " + filename + " was successfully deleted.");
+            }
+            else {
+                _StdOut.putText("The file does not exist.");
+            }
+        };
         //This will return a key based on the track sector and block
         DeviceDriverFileSystem.prototype.getKey = function (track, sector, block) {
             var t = track.toString(16).toUpperCase().padStart(2, "0");
