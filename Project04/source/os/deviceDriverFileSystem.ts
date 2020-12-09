@@ -40,9 +40,15 @@ module TSOS{
         public createFile(name){
             let dirKey = this.findDirKey();
             if(dirKey !== null){
-                let hexName = this.asciiToHex(name);
-                this.setStorage(dirKey, ("01" + dirKey + hexName).padEnd(128, "0"));
-                _StdOut.putText("Created file: " + name);
+                let check = this.searchFileName(name[0]);
+                if(check === null){
+                    let hexName = this.asciiToHex(name);
+                    this.setStorage(dirKey, ("01" + dirKey + hexName).padEnd(128, "0"));
+                    _StdOut.putText("Created file: " + name);
+                }
+                else{
+                    _StdOut.putText("File named: " + name + " already exists.")
+                }
             }
             else{
                 _StdOut.putText("There are no available directory blocks.");

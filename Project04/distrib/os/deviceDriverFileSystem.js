@@ -49,9 +49,15 @@ var TSOS;
         DeviceDriverFileSystem.prototype.createFile = function (name) {
             var dirKey = this.findDirKey();
             if (dirKey !== null) {
-                var hexName = this.asciiToHex(name);
-                this.setStorage(dirKey, ("01" + dirKey + hexName).padEnd(128, "0"));
-                _StdOut.putText("Created file: " + name);
+                var check = this.searchFileName(name[0]);
+                if (check === null) {
+                    var hexName = this.asciiToHex(name);
+                    this.setStorage(dirKey, ("01" + dirKey + hexName).padEnd(128, "0"));
+                    _StdOut.putText("Created file: " + name);
+                }
+                else {
+                    _StdOut.putText("File named: " + name + " already exists.");
+                }
             }
             else {
                 _StdOut.putText("There are no available directory blocks.");
