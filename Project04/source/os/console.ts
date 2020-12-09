@@ -165,7 +165,7 @@ module TSOS {
             this.buffer = this.commandList[this.commandCounter];
         }
         public bsod(){
-            _DrawingContext.style.backgroundColor = "blue";
+            _Canvas.style.backgroundColor = "blue";
         }
     }
  }

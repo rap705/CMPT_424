@@ -153,6 +153,9 @@ module TSOS {
             sc = new ShellCommand(this.shellSetSchedule, "setschedule", "<rr, fcfs, priority> - Gets the current schedule");
             this.commandList[this.commandList.length] = sc;
 
+            //Blue Screen of Death
+            sc = new ShellCommand(this.bsod, "bsod", "- Blue Screen of Death");
+            this.commandList[this.commandList.length] = sc;
 
             // Display the initial prompt.
             this.putPrompt();
@@ -656,7 +659,10 @@ module TSOS {
 
         //This will eventually give the blue screen of death maybe
         public bsod(): void{
-            
+            _StdOut.clearScreen();
+            _Kernel.krnShutdown();
+            clearInterval(_hardwareClockID);
+            _StdOut.bsod();
         }
 
     }

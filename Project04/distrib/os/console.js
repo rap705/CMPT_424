@@ -168,7 +168,7 @@ var TSOS;
             this.buffer = this.commandList[this.commandCounter];
         };
         Console.prototype.bsod = function () {
-            _DrawingContext.style.backgroundColor = "blue";
+            _Canvas.style.backgroundColor = "blue";
         };
         return Console;
     }());

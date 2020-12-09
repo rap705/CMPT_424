@@ -105,6 +105,9 @@ var TSOS;
             //Sets the current schedule type
             sc = new TSOS.ShellCommand(this.shellSetSchedule, "setschedule", "<rr, fcfs, priority> - Gets the current schedule");
             this.commandList[this.commandList.length] = sc;
+            //Blue Screen of Death
+            sc = new TSOS.ShellCommand(this.bsod, "bsod", "- Blue Screen of Death");
+            this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
         };
@@ -567,6 +570,10 @@ var TSOS;
         };
         //This will eventually give the blue screen of death maybe
         Shell.prototype.bsod = function () {
+            _StdOut.clearScreen();
+            _Kernel.krnShutdown();
+            clearInterval(_hardwareClockID);
+            _StdOut.bsod();
         };
         return Shell;
     }());
