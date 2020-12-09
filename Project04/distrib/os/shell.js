@@ -96,6 +96,9 @@ var TSOS;
             //Deletes the specified file
             sc = new TSOS.ShellCommand(this.shellDeleteFile, "delete", "<filename> - Delete the specified file");
             this.commandList[this.commandList.length] = sc;
+            //Deletes the specified file
+            sc = new TSOS.ShellCommand(this.shellListFiles, "ls", "List all files on the disk");
+            this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
         };
@@ -519,6 +522,12 @@ var TSOS;
         };
         //This will list all files on the disk
         Shell.prototype.shellListFiles = function () {
+            if (_krnFileSystemDriver.status !== "formatted") {
+                _StdOut.putText("The disk is not formatted. Format the disk to create a file.");
+            }
+            else {
+                _krnFileSystemDriver.listAllFiles();
+            }
         };
         //This will eventually give the blue screen of death maybe
         Shell.prototype.bsod = function () {

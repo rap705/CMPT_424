@@ -269,5 +269,26 @@ module TSOS{
             return data;
         }
 
+        //List all files on the disk
+        public listAllFiles(){
+            let files = [];
+            for(let i = 0; i < 4; i++){
+                for(let k = 0; k < 8; k++){
+                    if(i !== 0 || k !== 0){
+                        let block = sessionStorage.getItem(this.getKey(0 , i, k));
+                        if(!this.blockFree(block)){
+                            let filename = this.getBlockData(block);
+                            files.push(filename);
+                            _StdOut.putText(filename);
+                            _StdOut.advanceLine();
+                        }
+                    }
+                }
+            }
+            if(files.length === 0){
+                _StdOut.putText("No files currently stored on disk.")
+            }
+        }
+
     }
 }

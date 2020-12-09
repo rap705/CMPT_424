@@ -260,6 +260,26 @@ var TSOS;
             data += this.getBlockData(block);
             return data;
         };
+        //List all files on the disk
+        DeviceDriverFileSystem.prototype.listAllFiles = function () {
+            var files = [];
+            for (var i = 0; i < 4; i++) {
+                for (var k = 0; k < 8; k++) {
+                    if (i !== 0 || k !== 0) {
+                        var block = sessionStorage.getItem(this.getKey(0, i, k));
+                        if (!this.blockFree(block)) {
+                            var filename = this.getBlockData(block);
+                            files.push(filename);
+                            _StdOut.putText(filename);
+                            _StdOut.advanceLine();
+                        }
+                    }
+                }
+            }
+            if (files.length === 0) {
+                _StdOut.putText("No files currently stored on disk.");
+            }
+        };
         return DeviceDriverFileSystem;
     }(TSOS.DeviceDriver));
     TSOS.DeviceDriverFileSystem = DeviceDriverFileSystem;
