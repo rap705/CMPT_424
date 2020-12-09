@@ -33,6 +33,8 @@ var TSOS;
             // Clear the log text box.
             // Use the TypeScript cast to HTMLInputElement
             document.getElementById("taHostLog").value = "";
+            //Set the Disk Display to not formatted
+            document.getElementById("divDiskDisplay").innerHTML = "Disk not Formated";
             // Set focus on the start button.
             // Use the TypeScript cast to HTMLInputElement
             document.getElementById("btnStartOS").focus();

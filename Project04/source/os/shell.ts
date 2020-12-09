@@ -599,6 +599,11 @@ module TSOS {
             }
         }
 
+        //This will list all files on the disk
+        public shellListFiles(){
+            
+        }
+
 
         //This will eventually give the blue screen of death maybe
         public bsod(): void{

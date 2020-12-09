@@ -517,6 +517,9 @@ var TSOS;
                 }
             }
         };
+        //This will list all files on the disk
+        Shell.prototype.shellListFiles = function () {
+        };
         //This will eventually give the blue screen of death maybe
         Shell.prototype.bsod = function () {
         };

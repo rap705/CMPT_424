@@ -38,6 +38,9 @@ module TSOS {
             // Use the TypeScript cast to HTMLInputElement
             (<HTMLInputElement> document.getElementById("taHostLog")).value="";
 
+            //Set the Disk Display to not formatted
+            (<HTMLInputElement> document.getElementById("divDiskDisplay")).innerHTML="Disk not Formated";
+
             // Set focus on the start button.
             // Use the TypeScript cast to HTMLInputElement
             (<HTMLInputElement> document.getElementById("btnStartOS")).focus();

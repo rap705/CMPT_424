@@ -69,3 +69,12 @@ h3 {
 #divCPU{
   float: right;
 }
+
+#divDisk{
+  margin-top: 300px;
+}
+#divDiskDisplay{
+  width: 500px;
+  overflow: auto;
+  background-color: white;
+}
