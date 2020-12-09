@@ -30,6 +30,12 @@ h3 {
   font-style: normal;
 }
 
+table.disk, table.disk td, table.disk th, table.disk tr{
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
 #display {
   background-color:#DFDBC3;
   border: 2px solid red;
