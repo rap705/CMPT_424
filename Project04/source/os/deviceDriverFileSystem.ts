@@ -21,7 +21,7 @@ module TSOS{
         public formatDrive(){
             if(this.status !== "formatted"){
                 //This will initialize the display for the Hard Drive
-
+                Utils.initDiskTable();
             }
             for(let i = 0; i < 4; i++){
                 for(let k = 0; k < 8; k++){
@@ -149,6 +149,7 @@ module TSOS{
         //This will set the item in session Storage given a key and data value
         public setStorage(key, data){
             sessionStorage.setItem(key, data);
+            Utils.updateDiskRow(key);
         }
 
         //Find the dir key
@@ -294,6 +295,14 @@ module TSOS{
             if(files.length === 0){
                 _StdOut.putText("No files currently stored on disk.")
             }
+        }
+
+        //parse key for use when printing to screen
+        public parseKey(key){
+            let i = parseInt(key.substring(0, 2), 16).toString();
+            let j = parseInt(key.substring(4, 6), 16).toString(16);
+            let k = parseInt(key.substring(2, 4), 16).toString(16);
+            return{i: i, j: j, k: k}
         }
 
     }

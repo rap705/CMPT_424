@@ -34,6 +34,7 @@ table.disk, table.disk td, table.disk th, table.disk tr{
   border: 1px solid black;
   border-collapse: collapse;
   padding: 10px;
+  text-align: center;
 }
 
 #display {
@@ -80,7 +81,8 @@ table.disk, table.disk td, table.disk th, table.disk tr{
   margin-top: 300px;
 }
 #divDiskDisplay{
-  width: 500px;
+  width: 550px;
+  height: 300px;
   overflow: auto;
   background-color: white;
 }

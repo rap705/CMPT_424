@@ -44,7 +44,52 @@ var TSOS;
             }
             return retVal;
         };
-        Utils.prototype.drawMemTable = function () {
+        //This will initialize the disk display so it can be easily modified later using ids
+        Utils.initDiskTable = function () {
+            var body = document.getElementById("diskBody");
+            for (var i = 0; i < 4; i++) {
+                for (var k = 0; k < 8; k++) {
+                    for (var j = 0; j < 8; j++) {
+                        var key = _krnFileSystemDriver.getKey(i, k, j);
+                        var row = document.createElement("tr");
+                        row.id = "Row" + i + k + j;
+                        var column = document.createElement("td");
+                        column.id = "Key" + i + k + j;
+                        var parseKey = _krnFileSystemDriver.parseKey(key);
+                        column.innerHTML = parseKey.i + ":" + parseKey.k + ":" + parseKey.j;
+                        row.appendChild(column);
+                        column = document.createElement("td");
+                        column.id = "Use" + i + k + j;
+                        row.appendChild(column);
+                        column = document.createElement("td");
+                        column.id = "Next" + i + k + j;
+                        row.appendChild(column);
+                        column = document.createElement("td");
+                        column.id = "Data" + i + k + j;
+                        row.appendChild(column);
+                        body.appendChild(row);
+                    }
+                }
+            }
+        };
+        //Update a specific row in the disk display
+        Utils.updateDiskRow = function (key) {
+            var parseKey = _krnFileSystemDriver.parseKey(key);
+            var block = sessionStorage.getItem(key);
+            var use = document.getElementById("Use" + parseKey.i + parseKey.k + parseKey.j);
+            var inUse = _krnFileSystemDriver.blockFree(block);
+            if (inUse) {
+                use.innerHTML = "0";
+            }
+            else {
+                use.innerHTML = "1";
+            }
+            var next = document.getElementById("Next" + parseKey.i + parseKey.k + parseKey.j);
+            var blockPointer = _krnFileSystemDriver.getBlockPointer(block);
+            var parsePointer = _krnFileSystemDriver.parseKey(blockPointer);
+            next.innerHTML = parsePointer.i + parsePointer.k + parsePointer.j;
+            var data = document.getElementById("Data" + parseKey.i + parseKey.k + parseKey.j);
+            data.innerHTML = _krnFileSystemDriver.getBlockDataRaw(block);
         };
         return Utils;
     }());

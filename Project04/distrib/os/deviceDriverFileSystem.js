@@ -32,6 +32,7 @@ var TSOS;
         DeviceDriverFileSystem.prototype.formatDrive = function () {
             if (this.status !== "formatted") {
                 //This will initialize the display for the Hard Drive
+                TSOS.Utils.initDiskTable();
             }
             for (var i = 0; i < 4; i++) {
                 for (var k = 0; k < 8; k++) {
@@ -151,6 +152,7 @@ var TSOS;
         //This will set the item in session Storage given a key and data value
         DeviceDriverFileSystem.prototype.setStorage = function (key, data) {
             sessionStorage.setItem(key, data);
+            TSOS.Utils.updateDiskRow(key);
         };
         //Find the dir key
         DeviceDriverFileSystem.prototype.findDirKey = function () {
@@ -285,6 +287,13 @@ var TSOS;
             if (files.length === 0) {
                 _StdOut.putText("No files currently stored on disk.");
             }
+        };
+        //parse key for use when printing to screen
+        DeviceDriverFileSystem.prototype.parseKey = function (key) {
+            var i = parseInt(key.substring(0, 2), 16).toString();
+            var j = parseInt(key.substring(4, 6), 16).toString(16);
+            var k = parseInt(key.substring(2, 4), 16).toString(16);
+            return { i: i, j: j, k: k };
         };
         return DeviceDriverFileSystem;
     }(TSOS.DeviceDriver));
