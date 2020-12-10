@@ -57,6 +57,9 @@ var _currentPID: number = 0;
 var _PCBCon= [];
 var _CurrentPCB;
 
+//Disk
+var _SwapFile = "SFP"
+
 //Single Step
 var _SingleStep = false;
 

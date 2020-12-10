@@ -435,8 +435,6 @@ module TSOS {
                 }
             }
             if(valid){
-                //_StdOut.putText("Valid Hex");
-                let status = _MemoryManager.checkAvailabilty();
                 if(_MemoryManager.checkAvailabilty()){
                     let pcb = new TSOS.ProcessControlBlock(_currentPID);
 
@@ -448,7 +446,8 @@ module TSOS {
                     _currentPID ++;
 
                     //Get the available memory segment and save it in the PCB
-                   pcb.memSegment = _MemoryManager.getAvailableMem();
+                    let segment = _MemoryManager.getAvailableMem();
+                    pcb.memSegment = segment;
 
                    //Based off the memory Segment determine the base and limit
                    if(pcb.memSegment === 0){
@@ -482,8 +481,25 @@ module TSOS {
                     //Print the Process to screen
                     _MemoryAccessor.updateProcessDis();
                 }
+                else if(_krnFileSystemDriver.status == "formatted"){
+                    userInput = userInput.replace(/\s/g, "");
+                    let fileKey = _krnFileSystemDriver.writeProcess(userInput, _currentPID);
+                    let pcb = new TSOS.ProcessControlBlock(_currentPID);
+
+                    _PCBCon[_PCBCon.length] = pcb;
+
+                    _StdOut.advanceLine();
+                    _StdOut.putText("Program loaded to disk. PID: " + _currentPID);
+                    _currentPID ++;
+
+                    pcb.memSegment = fileKey;
+
+                    //Print the Process to screen
+                    _MemoryAccessor.updateProcessDis();
+
+                }
                 else{
-                    _StdOut.putText("No memory available")
+                    _StdOut.putText("No available memory.  Please format the disk.")
                 }
             }
         }
@@ -599,6 +615,9 @@ module TSOS {
                 if(args.length > 0){
                     _krnFileSystemDriver.readFile(args[0]);
                 }
+                else{
+                    _StdOut.putText("Must provide the filename to read.")
+                }
             }
         }
 
@@ -610,6 +629,9 @@ module TSOS {
             else{
                 if(args.length > 0){
                     _krnFileSystemDriver.deleteFile(args[0]);
+                }
+                else{
+                    _StdOut.putText("Must provide the filename to delete.")
                 }
             }
         }

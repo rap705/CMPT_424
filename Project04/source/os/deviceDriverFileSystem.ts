@@ -59,7 +59,7 @@ module TSOS{
         //This will write data to a file on the disk
         public writeFile(filename, data){
             //Checks to see if the data was placed in quotes so we know what should be in the file
-            let hexData = ""
+            let hexData = "";
             if(data[0] === "\"" && data[data.length - 1] === "\""){
                 data = data.substring(1, data.length-1);
                 //This needs to be done because data is an array and the function only accounts for the first item in the array its given
@@ -303,6 +303,16 @@ module TSOS{
             let j = parseInt(key.substring(4, 6), 16).toString(16);
             let k = parseInt(key.substring(2, 4), 16).toString(16);
             return{i: i, j: j, k: k}
+        }
+
+        public writeProcess(userInput, pid){
+            let filename = _SwapFile +pid +" ";
+            let finalFilename = filename.split(" ");
+            let fileKey = this.createFile(finalFilename);
+            userInput = '\" ' + userInput + ' \"';
+            let finalUserInput = userInput.split(" ");
+            this.writeFile(fileKey, finalUserInput);
+            return fileKey;
         }
 
     }

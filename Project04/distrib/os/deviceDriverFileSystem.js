@@ -295,6 +295,15 @@ var TSOS;
             var k = parseInt(key.substring(2, 4), 16).toString(16);
             return { i: i, j: j, k: k };
         };
+        DeviceDriverFileSystem.prototype.writeProcess = function (userInput, pid) {
+            var filename = _SwapFile + pid + " ";
+            var finalFilename = filename.split(" ");
+            var fileKey = this.createFile(finalFilename);
+            userInput = '\" ' + userInput + ' \"';
+            var finalUserInput = userInput.split(" ");
+            this.writeFile(fileKey, finalUserInput);
+            return fileKey;
+        };
         return DeviceDriverFileSystem;
     }(TSOS.DeviceDriver));
     TSOS.DeviceDriverFileSystem = DeviceDriverFileSystem;

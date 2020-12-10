@@ -375,8 +375,6 @@ var TSOS;
                 }
             }
             if (valid) {
-                //_StdOut.putText("Valid Hex");
-                var status_1 = _MemoryManager.checkAvailabilty();
                 if (_MemoryManager.checkAvailabilty()) {
                     var pcb = new TSOS.ProcessControlBlock(_currentPID);
                     _PCBCon[_PCBCon.length] = pcb;
@@ -385,7 +383,8 @@ var TSOS;
                     _StdOut.putText("PID: " + _currentPID);
                     _currentPID++;
                     //Get the available memory segment and save it in the PCB
-                    pcb.memSegment = _MemoryManager.getAvailableMem();
+                    var segment = _MemoryManager.getAvailableMem();
+                    pcb.memSegment = segment;
                     //Based off the memory Segment determine the base and limit
                     if (pcb.memSegment === 0) {
                         pcb.base = 0;
@@ -412,8 +411,20 @@ var TSOS;
                     //Print the Process to screen
                     _MemoryAccessor.updateProcessDis();
                 }
+                else if (_krnFileSystemDriver.status == "formatted") {
+                    userInput = userInput.replace(/\s/g, "");
+                    var fileKey = _krnFileSystemDriver.writeProcess(userInput, _currentPID);
+                    var pcb = new TSOS.ProcessControlBlock(_currentPID);
+                    _PCBCon[_PCBCon.length] = pcb;
+                    _StdOut.advanceLine();
+                    _StdOut.putText("Program loaded to disk. PID: " + _currentPID);
+                    _currentPID++;
+                    pcb.memSegment = fileKey;
+                    //Print the Process to screen
+                    _MemoryAccessor.updateProcessDis();
+                }
                 else {
-                    _StdOut.putText("No memory available");
+                    _StdOut.putText("No available memory.  Please format the disk.");
                 }
             }
         };
@@ -516,6 +527,9 @@ var TSOS;
                 if (args.length > 0) {
                     _krnFileSystemDriver.readFile(args[0]);
                 }
+                else {
+                    _StdOut.putText("Must provide the filename to read.");
+                }
             }
         };
         //This will delete the specified file
@@ -526,6 +540,9 @@ var TSOS;
             else {
                 if (args.length > 0) {
                     _krnFileSystemDriver.deleteFile(args[0]);
+                }
+                else {
+                    _StdOut.putText("Must provide the filename to delete.");
                 }
             }
         };
