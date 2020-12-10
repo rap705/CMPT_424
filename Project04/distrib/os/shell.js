@@ -414,14 +414,18 @@ var TSOS;
                 else if (_krnFileSystemDriver.status == "formatted") {
                     userInput = userInput.replace(/\s/g, "");
                     var fileKey = _krnFileSystemDriver.writeProcess(userInput, _currentPID);
-                    var pcb = new TSOS.ProcessControlBlock(_currentPID);
-                    _PCBCon[_PCBCon.length] = pcb;
-                    _StdOut.advanceLine();
-                    _StdOut.putText("Program loaded to disk. PID: " + _currentPID);
-                    _currentPID++;
-                    pcb.memSegment = fileKey;
-                    //Print the Process to screen
-                    _MemoryAccessor.updateProcessDis();
+                    if (fileKey !== null) {
+                        var pcb = new TSOS.ProcessControlBlock(_currentPID);
+                        _PCBCon[_PCBCon.length] = pcb;
+                        _StdOut.putText("Program loaded to disk. PID: " + _currentPID);
+                        _currentPID++;
+                        pcb.memSegment = fileKey;
+                        //Print the Process to screen
+                        _MemoryAccessor.updateProcessDis();
+                    }
+                    else {
+                        _StdOut.putText("Failed to load process to disk.");
+                    }
                 }
                 else {
                     _StdOut.putText("No available memory.  Please format the disk.");

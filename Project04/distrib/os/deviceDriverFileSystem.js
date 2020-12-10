@@ -298,11 +298,50 @@ var TSOS;
         DeviceDriverFileSystem.prototype.writeProcess = function (userInput, pid) {
             var filename = _SwapFile + pid + " ";
             var finalFilename = filename.split(" ");
-            var fileKey = this.createFile(finalFilename);
-            userInput = '\" ' + userInput + ' \"';
-            var finalUserInput = userInput.split(" ");
-            this.writeFile(fileKey, finalUserInput);
-            return fileKey;
+            var dirKey = this.findDirKey();
+            //Create the file 
+            if (dirKey !== null) {
+                var check = this.searchFileName(finalFilename[0]);
+                if (check === null) {
+                    var hexName = this.asciiToHex(finalFilename);
+                    this.setStorage(dirKey, ("01" + dirKey + hexName).padEnd(128, "0"));
+                }
+                else {
+                    _StdOut.putText("Error: Process already exists");
+                    return null;
+                }
+            }
+            else {
+                _StdOut.putText("There are no available directory blocks.");
+                return null;
+            }
+            //Write file to Disk
+            if (dirKey !== null) {
+                var fileDirectoryBlock = sessionStorage.getItem(dirKey);
+                if (this.getBlockPointer(fileDirectoryBlock) !== dirKey) {
+                    this.deallocateBlock(this.getBlockPointer(fileDirectoryBlock));
+                }
+                var dataKeys = [];
+                for (var i = 0; i < userInput.length / 120; i++) {
+                    var openDataKey = this.findDataBlock();
+                    if (openDataKey === null) {
+                        _StdOut.putText("Not enough data blocks to store process.");
+                        return null;
+                    }
+                    dataKeys.push(openDataKey);
+                    this.setStorage(openDataKey, ("01" + openDataKey).padEnd(128, "0"));
+                }
+                this.setStorage(dirKey, ("01" + dataKeys[0] + sessionStorage.getItem(dirKey).substring(8)));
+                for (var i = 0; i < dataKeys.length; i++) {
+                    if (i !== dataKeys.length - 1) {
+                        this.setStorage(dataKeys[i], ("01" + dataKeys[i + 1] + userInput.substring(i * 60 * 2, (i + 1) * 60 * 2)).padEnd(128, "0"));
+                    }
+                    else {
+                        this.setStorage(dataKeys[i], ("01" + dataKeys[i] + userInput.substring(i * 60 * 2)).padEnd(128, "0"));
+                    }
+                }
+                _StdOut.putText("Data successfully written to file: " + filename);
+            }
         };
         return DeviceDriverFileSystem;
     }(TSOS.DeviceDriver));
