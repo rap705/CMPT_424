@@ -10,6 +10,13 @@ var TSOS;
                 _KernelInterruptQueue.enqueue(interrupt);
             }
         };
+        scheduler.fcfs = function () {
+            var interrupt = new TSOS.Interrupt(SOFTWARE_IRQ, [0]);
+            if (_CurrentStoredPCB.length >= 2) {
+                _Kernel.krnTrace("Context Switch with First-Come, First-Served");
+                _KernelInterruptQueue.enqueue(interrupt);
+            }
+        };
         return scheduler;
     }()); //End scheduler class
     TSOS.scheduler = scheduler;

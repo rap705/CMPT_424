@@ -305,6 +305,13 @@ module TSOS{
             return{i: i, j: j, k: k}
         }
 
+        /*
+            This will write a process to the disk 
+            The reason why it does not use the write and create file functions is because 
+            I had an issue with converting the userInput to hex since it was already in hex
+            Rather than rewrite that function and risk messing something up with little time to fix it I choose
+            to pull the parts of those functions I needed to make this function work.
+        */
         public writeProcess(userInput, pid){
             let filename = _SwapFile +pid +" ";
             let finalFilename = filename.split(" ");

@@ -80,18 +80,32 @@ var TSOS;
             }
             else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
                 //_CPU.cycle();
-                if (_Running >= 2) {
-                    if (_ScheduleCounter >= _Quantum) {
-                        TSOS.scheduler.roundRobin();
-                        _ScheduleCounter = 0;
+                if (_ScheduleType === "rr") {
+                    if (_Running >= 2) {
+                        if (_ScheduleCounter >= _Quantum) {
+                            TSOS.scheduler.roundRobin();
+                            _ScheduleCounter = 0;
+                        }
+                        else {
+                            _ScheduleCounter++;
+                            _CPU.cycle();
+                        }
                     }
-                    else {
-                        _ScheduleCounter++;
+                    else if (_Running === 1) {
                         _CPU.cycle();
                     }
                 }
-                else if (_Running === 1) {
-                    _CPU.cycle();
+                else if (_ScheduleType === "fcfs") {
+                    if (_Running >= 2) {
+                        if (_CurrentPCB.status === "Terminated") {
+                        }
+                        else {
+                            _CPU.cycle();
+                        }
+                    }
+                    else if (_Running === 1) {
+                        _CPU.cycle();
+                    }
                 }
             }
             else { // If there are no interrupts and there is nothing being executed then just be idle.
@@ -211,49 +225,61 @@ var TSOS;
             //_CPU.PC ++;
         };
         Kernel.prototype.pcbSwitch = function () {
-            if (_CurrentStoredPCB.length === 2) {
-                if (_CurrentPCB.PID === _CurrentStoredPCB[0].PID) {
-                    TSOS.dispatcher.save();
-                    if (_CurrentStoredPCB[1].state != "Terminated") {
+            if (_ScheduleType === "rr") {
+                if (_CurrentStoredPCB.length === 2) {
+                    if (_CurrentPCB.PID === _CurrentStoredPCB[0].PID) {
+                        TSOS.dispatcher.save();
+                        if (_CurrentStoredPCB[1].state != "Terminated") {
+                            _CurrentStoredPCB[0] = _CurrentPCB;
+                            _CurrentStoredPCB[0].state = "Ready";
+                            _CurrentPCB = _CurrentStoredPCB[1];
+                            _CurrentStoredPCB[1].state = "Running";
+                            TSOS.dispatcher.reload();
+                        }
+                    }
+                    else {
+                        TSOS.dispatcher.save();
+                        if (_CurrentStoredPCB[0].state != "Terminated") {
+                            _CurrentStoredPCB[1] = _CurrentPCB;
+                            _CurrentStoredPCB[1].state = "Ready";
+                            _CurrentPCB = _CurrentStoredPCB[0];
+                            _CurrentStoredPCB[0].state = "Running";
+                            TSOS.dispatcher.reload();
+                        }
+                    }
+                }
+                else if (_CurrentStoredPCB.length === 3) {
+                    if (_CurrentPCB.PID === _CurrentStoredPCB[0].PID) {
+                        TSOS.dispatcher.save();
                         _CurrentStoredPCB[0] = _CurrentPCB;
-                        _CurrentStoredPCB[0].state = "Ready";
                         _CurrentPCB = _CurrentStoredPCB[1];
-                        _CurrentStoredPCB[1].state = "Running";
                         TSOS.dispatcher.reload();
                     }
-                }
-                else {
-                    TSOS.dispatcher.save();
-                    if (_CurrentStoredPCB[0].state != "Terminated") {
+                    else if (_CurrentPCB.PID === _CurrentStoredPCB[1].PID) {
+                        TSOS.dispatcher.save();
                         _CurrentStoredPCB[1] = _CurrentPCB;
-                        _CurrentStoredPCB[1].state = "Ready";
+                        _CurrentPCB = _CurrentStoredPCB[2];
+                        TSOS.dispatcher.reload();
+                    }
+                    else {
+                        TSOS.dispatcher.save();
+                        _CurrentStoredPCB[2] = _CurrentPCB;
                         _CurrentPCB = _CurrentStoredPCB[0];
-                        _CurrentStoredPCB[0].state = "Running";
                         TSOS.dispatcher.reload();
                     }
                 }
+                _MemoryAccessor.updateProcessDis();
             }
-            else if (_CurrentStoredPCB.length === 3) {
-                if (_CurrentPCB.PID === _CurrentStoredPCB[0].PID) {
-                    TSOS.dispatcher.save();
-                    _CurrentStoredPCB[0] = _CurrentPCB;
-                    _CurrentPCB = _CurrentStoredPCB[1];
-                    TSOS.dispatcher.reload();
-                }
-                else if (_CurrentPCB.PID === _CurrentStoredPCB[1].PID) {
-                    TSOS.dispatcher.save();
-                    _CurrentStoredPCB[1] = _CurrentPCB;
-                    _CurrentPCB = _CurrentStoredPCB[2];
-                    TSOS.dispatcher.reload();
-                }
-                else {
-                    TSOS.dispatcher.save();
-                    _CurrentStoredPCB[2] = _CurrentPCB;
-                    _CurrentPCB = _CurrentStoredPCB[0];
-                    TSOS.dispatcher.reload();
+            else if (_ScheduleType === "fcfs") {
+                for (var i = 0; i < _CurrentStoredPCB.length - 1; i++) {
+                    if (_CurrentStoredPCB[i].PID === _CurrentPCB.PID) {
+                        TSOS.dispatcher.save();
+                        _CurrentPCB = _CurrentStoredPCB[i + 1];
+                        TSOS.dispatcher.reload();
+                        return;
+                    }
                 }
             }
-            _MemoryAccessor.updateProcessDis();
         };
         return Kernel;
     }());

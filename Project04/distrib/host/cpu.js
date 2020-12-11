@@ -162,8 +162,11 @@ var TSOS;
             if (_Running === 0) {
                 this.isExecuting = false;
             }
-            else {
+            else if (_ScheduleType === "rr") {
                 TSOS.scheduler.roundRobin();
+            }
+            else if (_ScheduleType === "fcfs") {
+                TSOS.scheduler.fcfs();
             }
         };
         //Compare a byte in memory to the X-Reg

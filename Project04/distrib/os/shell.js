@@ -420,6 +420,7 @@ var TSOS;
                         _StdOut.putText("Program loaded to disk. PID: " + _currentPID);
                         _currentPID++;
                         pcb.memSegment = fileKey;
+                        _CurrentStoredPCB[_CurrentStoredPCB.length] = pcb;
                         //Print the Process to screen
                         _MemoryAccessor.updateProcessDis();
                     }

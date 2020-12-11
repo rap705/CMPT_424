@@ -295,6 +295,13 @@ var TSOS;
             var k = parseInt(key.substring(2, 4), 16).toString(16);
             return { i: i, j: j, k: k };
         };
+        /*
+            This will write a process to the disk
+            The reason why it does not use the write and create file functions is because
+            I had an issue with converting the userInput to hex since it was already in hex
+            Rather than rewrite that function and risk messing something up with little time to fix it I choose
+            to pull the parts of those functions I needed to make this function work.
+        */
         DeviceDriverFileSystem.prototype.writeProcess = function (userInput, pid) {
             var filename = _SwapFile + pid + " ";
             var finalFilename = filename.split(" ");
@@ -340,8 +347,8 @@ var TSOS;
                         this.setStorage(dataKeys[i], ("01" + dataKeys[i] + userInput.substring(i * 60 * 2)).padEnd(128, "0"));
                     }
                 }
-                _StdOut.putText("Data successfully written to file: " + filename);
             }
+            return dirKey;
         };
         return DeviceDriverFileSystem;
     }(TSOS.DeviceDriver));

@@ -89,22 +89,39 @@ module TSOS {
                 // TODO (maybe): Implement a priority queue based on the IRQ number/id to enforce interrupt priority.
                 var interrupt = _KernelInterruptQueue.dequeue();
                 this.krnInterruptHandler(interrupt.irq, interrupt.params);
-            } else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
+            } 
+            else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
                 //_CPU.cycle();
-                if(_Running >= 2){
-                    if(_ScheduleCounter >= _Quantum){
-                        scheduler.roundRobin();
-                        _ScheduleCounter = 0;
+                if(_ScheduleType ===  "rr"){
+                    if(_Running >= 2){
+                        if(_ScheduleCounter >= _Quantum){
+                            scheduler.roundRobin();
+                            _ScheduleCounter = 0;
+                        }
+                        else{
+                            _ScheduleCounter ++;
+                            _CPU.cycle();
+                        }
                     }
-                    else{
-                        _ScheduleCounter ++;
+                    else if(_Running === 1){
                         _CPU.cycle();
                     }
                 }
-                else if(_Running === 1){
-                    _CPU.cycle();
+                else if(_ScheduleType === "fcfs"){
+                    if(_Running >= 2){
+                        if(_CurrentPCB.status === "Terminated"){
+                            
+                        }
+                        else{
+                            _CPU.cycle();
+                        }
+                    }
+                    else if(_Running === 1){
+                        _CPU.cycle();
+                    }
                 }
-            } else {                       // If there are no interrupts and there is nothing being executed then just be idle.
+            } 
+            else {                       // If there are no interrupts and there is nothing being executed then just be idle.
                 this.krnTrace("Idle");
             }
         }
@@ -232,49 +249,61 @@ module TSOS {
         }
         
         public pcbSwitch() {
-            if(_CurrentStoredPCB.length === 2){
-                if(_CurrentPCB.PID === _CurrentStoredPCB[0].PID){
-                    dispatcher.save();
-                    if(_CurrentStoredPCB[1].state != "Terminated"){
+            if(_ScheduleType === "rr"){
+                if(_CurrentStoredPCB.length === 2){
+                    if(_CurrentPCB.PID === _CurrentStoredPCB[0].PID){
+                        dispatcher.save();
+                        if(_CurrentStoredPCB[1].state != "Terminated"){
+                            _CurrentStoredPCB[0] = _CurrentPCB;
+                            _CurrentStoredPCB[0].state = "Ready";
+                            _CurrentPCB = _CurrentStoredPCB[1];
+                            _CurrentStoredPCB[1].state = "Running";
+                            dispatcher.reload();
+                        }
+                    }
+                    else{
+                        dispatcher.save();
+                        if(_CurrentStoredPCB[0].state != "Terminated"){
+                            _CurrentStoredPCB[1] = _CurrentPCB;
+                            _CurrentStoredPCB[1].state = "Ready";
+                            _CurrentPCB = _CurrentStoredPCB[0];
+                            _CurrentStoredPCB[0].state = "Running";
+                            dispatcher.reload();
+                        }
+                    }
+                }
+                else if(_CurrentStoredPCB.length === 3){
+                    if(_CurrentPCB.PID === _CurrentStoredPCB[0].PID){
+                        dispatcher.save();
                         _CurrentStoredPCB[0] = _CurrentPCB;
-                        _CurrentStoredPCB[0].state = "Ready";
                         _CurrentPCB = _CurrentStoredPCB[1];
-                        _CurrentStoredPCB[1].state = "Running";
                         dispatcher.reload();
                     }
-                }
-                else{
-                    dispatcher.save();
-                    if(_CurrentStoredPCB[0].state != "Terminated"){
+                    else if(_CurrentPCB.PID === _CurrentStoredPCB[1].PID){
+                        dispatcher.save();
                         _CurrentStoredPCB[1] = _CurrentPCB;
-                        _CurrentStoredPCB[1].state = "Ready";
+                        _CurrentPCB = _CurrentStoredPCB[2];
+                        dispatcher.reload();
+                    }
+                    else{
+                        dispatcher.save();
+                        _CurrentStoredPCB[2] = _CurrentPCB;
                         _CurrentPCB = _CurrentStoredPCB[0];
-                        _CurrentStoredPCB[0].state = "Running";
                         dispatcher.reload();
                     }
                 }
+                _MemoryAccessor.updateProcessDis();
             }
-            else if(_CurrentStoredPCB.length === 3){
-                if(_CurrentPCB.PID === _CurrentStoredPCB[0].PID){
-                    dispatcher.save();
-                    _CurrentStoredPCB[0] = _CurrentPCB;
-                    _CurrentPCB = _CurrentStoredPCB[1];
-                    dispatcher.reload();
-                }
-                else if(_CurrentPCB.PID === _CurrentStoredPCB[1].PID){
-                    dispatcher.save();
-                    _CurrentStoredPCB[1] = _CurrentPCB;
-                    _CurrentPCB = _CurrentStoredPCB[2];
-                    dispatcher.reload();
-                }
-                else{
-                    dispatcher.save();
-                    _CurrentStoredPCB[2] = _CurrentPCB;
-                    _CurrentPCB = _CurrentStoredPCB[0];
-                    dispatcher.reload();
+            else if(_ScheduleType === "fcfs"){
+                for(let i = 0; i < _CurrentStoredPCB.length-1; i++){
+                    if(_CurrentStoredPCB[i].PID === _CurrentPCB.PID){
+                        dispatcher.save();
+                        _CurrentPCB = _CurrentStoredPCB[i+1];
+                        dispatcher.reload();
+                        return;
+                    }
                 }
             }
-            _MemoryAccessor.updateProcessDis();
         }
     }
 }

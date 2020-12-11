@@ -177,8 +177,11 @@ module TSOS {
             if(_Running === 0){
                 this.isExecuting = false;
             }
-            else{
+            else if(_ScheduleType === "rr"){
                 scheduler.roundRobin();
+            }
+            else if(_ScheduleType === "fcfs"){
+                scheduler.fcfs();
             }
         }
 
