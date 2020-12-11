@@ -273,11 +273,16 @@ var TSOS;
             else if (_ScheduleType === "fcfs") {
                 for (var i = 0; i < _CurrentStoredPCB.length - 1; i++) {
                     if (_CurrentStoredPCB[i].PID === _CurrentPCB.PID) {
-                        if (_CurrentStoredPCB[i].memSegment.length() === 1) {
+                        if (_CurrentStoredPCB[i].memSegment === 0 || _CurrentStoredPCB[i].memSegment === 1 || _CurrentStoredPCB[i].memSegment === 2) {
                             TSOS.dispatcher.save();
                             _CurrentPCB = _CurrentStoredPCB[i + 1];
                             TSOS.dispatcher.reload();
                             return;
+                        }
+                        else {
+                            TSOS.dispatcher.save();
+                            var freeSegment = _CurrentPCB.memSegment;
+                            var process = _MemoryAccessor.readAll(freeSegment);
                         }
                     }
                 }

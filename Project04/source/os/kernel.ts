@@ -297,7 +297,7 @@ module TSOS {
             else if(_ScheduleType === "fcfs"){
                 for(let i = 0; i < _CurrentStoredPCB.length-1; i++){
                     if(_CurrentStoredPCB[i].PID === _CurrentPCB.PID){
-                        if(_CurrentStoredPCB[i].memSegment.length() === 1){
+                        if(_CurrentStoredPCB[i].memSegment === 0 || _CurrentStoredPCB[i].memSegment === 1 ||_CurrentStoredPCB[i].memSegment === 2){
                             dispatcher.save();
                             _CurrentPCB = _CurrentStoredPCB[i+1];
                             dispatcher.reload();
@@ -305,7 +305,8 @@ module TSOS {
                         }
                         else{
                             dispatcher.save();
-                            
+                            let freeSegment = _CurrentPCB.memSegment;
+                            let process = _MemoryAccessor.readAll(freeSegment);
                         }
                     }
                 }

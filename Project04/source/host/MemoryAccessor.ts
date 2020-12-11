@@ -123,6 +123,27 @@ module TSOS {
             this.writeMemtoScreen();
             this.updateProcessDis();
         }
+
+        //This code will read all of the memory in a given segment
+        public readAll(memSegment){
+            let finalProcess = "";
+            if(memSegment === 0){
+                for(let i = 0; i < 255; i++){
+                    finalProcess += _Memory.memRange[i]
+                }
+            }
+            else if(memSegment === 1){
+                for(let i = 256; i < 511; i++){
+                    finalProcess += _Memory.memRange[i]
+                }
+            }
+            else{
+                for(let i = 512; i < 768; i++){
+                    finalProcess += _Memory.memRange[i]
+                }
+            }
+            return finalProcess;
+        }
         /*
             This code updates the CPU display
             I was not sure which class to put this code in and will probably move it to 
