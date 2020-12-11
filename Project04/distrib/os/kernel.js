@@ -273,7 +273,7 @@ var TSOS;
             else if (_ScheduleType === "fcfs") {
                 for (var i = 0; i < _CurrentStoredPCB.length - 1; i++) {
                     if (_CurrentStoredPCB[i].PID === _CurrentPCB.PID) {
-                        if (_CurrentStoredPCB[i].memSegment === 0 || _CurrentStoredPCB[i].memSegment === 1 || _CurrentStoredPCB[i].memSegment === 2) {
+                        if (_CurrentStoredPCB[i + 1].memSegment === 0 || _CurrentStoredPCB[i + 1].memSegment === 1 || _CurrentStoredPCB[i + 1].memSegment === 2) {
                             TSOS.dispatcher.save();
                             _CurrentPCB = _CurrentStoredPCB[i + 1];
                             TSOS.dispatcher.reload();
@@ -281,8 +281,24 @@ var TSOS;
                         }
                         else {
                             TSOS.dispatcher.save();
+                            //Write the current process in memory to the disk
                             var freeSegment = _CurrentPCB.memSegment;
                             var process = _MemoryAccessor.readAll(freeSegment);
+                            var newMemSeg = _krnFileSystemDriver.writeProcess(process, _CurrentPCB.PID);
+                            _CurrentPCB.memSegment = newMemSeg;
+                            //Switch process on disk into memory
+                            var filename = _SwapFile + _CurrentStoredPCB[i + 1].PID;
+                            var fileKey = _krnFileSystemDriver.searchFileName(filename);
+                            var fileDirectoryBlock = sessionStorage.getItem(fileKey);
+                            var dataPointer = _krnFileSystemDriver.getBlockPointer(fileDirectoryBlock);
+                            var block = sessionStorage.getItem(dataPointer);
+                            var data = _krnFileSystemDriver.getBlockDataRaw(block);
+                            _MemoryAccessor.writeMem(data, freeSegment);
+                            _MemoryAccessor.writeMemtoScreen();
+                            _CurrentStoredPCB[i] = _CurrentPCB;
+                            _CurrentStoredPCB[i + 1].memSegment = freeSegment;
+                            _CurrentPCB = _CurrentStoredPCB[i + 1];
+                            TSOS.dispatcher.reload();
                         }
                     }
                 }
