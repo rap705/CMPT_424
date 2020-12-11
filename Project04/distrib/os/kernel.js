@@ -273,10 +273,12 @@ var TSOS;
             else if (_ScheduleType === "fcfs") {
                 for (var i = 0; i < _CurrentStoredPCB.length - 1; i++) {
                     if (_CurrentStoredPCB[i].PID === _CurrentPCB.PID) {
-                        TSOS.dispatcher.save();
-                        _CurrentPCB = _CurrentStoredPCB[i + 1];
-                        TSOS.dispatcher.reload();
-                        return;
+                        if (_CurrentStoredPCB[i].memSegment.length() === 1) {
+                            TSOS.dispatcher.save();
+                            _CurrentPCB = _CurrentStoredPCB[i + 1];
+                            TSOS.dispatcher.reload();
+                            return;
+                        }
                     }
                 }
             }

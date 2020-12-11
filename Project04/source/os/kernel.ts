@@ -297,10 +297,16 @@ module TSOS {
             else if(_ScheduleType === "fcfs"){
                 for(let i = 0; i < _CurrentStoredPCB.length-1; i++){
                     if(_CurrentStoredPCB[i].PID === _CurrentPCB.PID){
-                        dispatcher.save();
-                        _CurrentPCB = _CurrentStoredPCB[i+1];
-                        dispatcher.reload();
-                        return;
+                        if(_CurrentStoredPCB[i].memSegment.length() === 1){
+                            dispatcher.save();
+                            _CurrentPCB = _CurrentStoredPCB[i+1];
+                            dispatcher.reload();
+                            return;
+                        }
+                        else{
+                            dispatcher.save();
+                            
+                        }
                     }
                 }
             }
